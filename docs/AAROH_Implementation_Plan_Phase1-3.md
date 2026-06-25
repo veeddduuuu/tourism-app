@@ -9,7 +9,7 @@
 |---|---|---|
 | Claude API (paid per token) | **Groq API** (free tier) | 14,400 req/day free; Llama 3.3 70B is fast + capable |
 | Railway.app ($5/mo after credit) | **Render.com** free tier | 750 hrs/month free web services |
-| Railway PostgreSQL | **Supabase** (free) | 500MB PostgreSQL + Auth + Storage all free |
+| Railway PostgreSQL | **NeonDB** (free) | Serverless PostgreSQL (free tier) |
 | Redis (Railway) | **Upstash Redis** (free) | 10,000 commands/day free, HTTP-based |
 | Mapbox (50K loads/mo limit) | **react-native-maps + OSM tiles** | Google Maps free quota generous; OSM tiles 100% free |
 | Foursquare (hotel/restaurant) | **Overpass API + OpenTripMap** | Both 100% free, no billing required |
@@ -49,7 +49,7 @@ aaroh/
 
 | Week | Backend (Dev 2) | Frontend (Dev 1) |
 |---|---|---|
-| **Week 1** | Server scaffold, Supabase schema, auth, CI/CD | Expo scaffold, API client, design system, auth screens |
+| **Week 1** | Server scaffold, NeonDB schema, auth, CI/CD | Expo scaffold, API client, design system, auth screens |
 | **Week 2** | Places/food/festivals/history routes, seeding, search | Map + list views, history timeline, food recipes, festival calendar |
 | **Week 3** | Groq trip planner, translation service, weather | Trip planner UI, itinerary display, translation UI |
 | **Week 4** | Hotels/restaurants API, smart rerouting, voice endpoint | Weather UI, hotels/restaurants UI, voice flow, polish |
@@ -61,7 +61,7 @@ aaroh/
 | # | Deliverable | Day | Owner |
 |---|---|---|---|
 | M1 | Monorepo boots, emulators running, server health-check live | Day 2 | Both |
-| M2 | Supabase schema live, 5 states seeded, JWT auth working | Day 5 | Dev 2 |
+| M2 | NeonDB schema live, 5 states seeded, JWT auth working | Day 5 | Dev 2 |
 | M3 | Expo app navigates between tabs, design system 20+ components | Day 5 | Dev 1 |
 | M4 | CI/CD auto-deploys to Render on push | Day 7 | Dev 2 |
 | M5 | 500+ places seeded, map + list view working | Day 10 | Both |
@@ -85,7 +85,7 @@ aaroh/
 ```bash
 cd apps/backend
 npm init -y
-npm install express cors helmet dotenv morgan zod @supabase/supabase-js
+npm install express cors helmet dotenv morgan zod drizzle-orm @neondatabase/serverless @clerk/clerk-sdk-node @clerk/clerk-expo
 npm install -D typescript @types/express @types/node ts-node-dev
 npx tsc --init
 ```
@@ -102,7 +102,7 @@ apps/backend/src/
 │   ├── weather.ts
 │   └── ai.ts
 ├── middleware/
-│   ├── auth.ts          ← JWT verification via Supabase
+│   ├── auth.ts          ← JWT verification via Clerk
 │   ├── rateLimit.ts
 │   └── errorHandler.ts
 ├── services/
@@ -110,7 +110,7 @@ apps/backend/src/
 │   ├── weather.ts       ← Open-Meteo wrapper
 │   └── translation.ts   ← Bhashini wrapper
 ├── db/
-│   └── supabase.ts      ← Supabase client init
+│   └── db.ts      ← Drizzle ORM & Neon client init
 └── index.ts
 ```
 
@@ -126,11 +126,11 @@ Deploy to Render.com: connect GitHub repo → New Web Service → build: `npm ru
 
 ---
 
-### Days 3–4 — Supabase Schema
+### Days 3–4 — NeonDB & Drizzle Schema
 
-Sign up at supabase.com → New Project → copy `SUPABASE_URL` and `SUPABASE_SERVICE_KEY`.
+Sign up at neon.tech → New Project → copy `DATABASE_URL` and `CLERK_SECRET_KEY`.
 
-**Run in Supabase SQL editor:**
+**Run using Drizzle migrations or Neon SQL editor:**
 ```sql
 CREATE TABLE states (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -222,32 +222,28 @@ RETURNS TABLE (id UUID, name TEXT, lat FLOAT, lng FLOAT, distance_km FLOAT) AS $
 $$ LANGUAGE SQL;
 ```
 
-**Supabase client:**
+**Neon + Drizzle client:**
 ```typescript
-// src/db/supabase.ts
-import { createClient } from '@supabase/supabase-js';
-export const supabase = createClient(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_KEY!  // service key on backend only
-);
+// src/db/index.ts
+import { neon } from '@neondatabase/serverless';
+import { drizzle } from 'drizzle-orm/neon-http';
+
+const sql = neon(process.env.DATABASE_URL!);
+export const db = drizzle(sql);
 ```
 
 ---
 
 ### Day 5 — Auth + Rate Limiting
 
-Supabase Auth handles JWTs — no need to write token management from scratch.
+Clerk Auth handles JWTs — no need to write token management from scratch.
 
 ```typescript
 // src/middleware/auth.ts
-export async function requireAuth(req, res, next) {
-  const token = req.headers.authorization?.split(' ')[1];
-  if (!token) return res.status(401).json({ error: 'No token' });
-  const { data: { user }, error } = await supabase.auth.getUser(token);
-  if (error || !user) return res.status(401).json({ error: 'Invalid token' });
-  req.user = user;
-  next();
-}
+import { ClerkExpressRequireAuth } from '@clerk/clerk-sdk-node';
+
+// Clerk handles JWT validation and populates req.auth
+export const requireAuth = ClerkExpressRequireAuth();
 ```
 
 ```bash
@@ -299,7 +295,7 @@ cd apps
 npx create-expo-app mobile --template expo-template-blank-typescript
 cd mobile
 npx expo install expo-router nativewind react-native-reanimated react-native-gesture-handler
-npm install @tanstack/react-query zustand @supabase/supabase-js axios
+npm install @tanstack/react-query zustand drizzle-orm @neondatabase/serverless @clerk/clerk-sdk-node @clerk/clerk-expo axios
 npx expo install react-native-maps expo-location expo-notifications
 ```
 
@@ -334,7 +330,7 @@ apps/mobile/
 │   └── appStore.ts            ← Zustand global state
 ├── lib/
 │   ├── api.ts                 ← Axios instance
-│   └── supabase.ts
+│   └── db.ts
 └── locales/
     ├── en/translation.json
     └── hi/translation.json
@@ -347,17 +343,14 @@ apps/mobile/
 ```typescript
 // lib/api.ts
 import axios from 'axios';
-import { supabase } from './supabase';
+import { useAuth } from '@clerk/clerk-expo';
 
 const api = axios.create({ baseURL: process.env.EXPO_PUBLIC_API_URL });
 
-api.interceptors.request.use(async (config) => {
-  const { data: { session } } = await supabase.auth.getSession();
-  if (session?.access_token) {
-    config.headers.Authorization = `Bearer ${session.access_token}`;
-  }
-  return config;
-});
+// Inside a React component or custom hook:
+// const { getToken } = useAuth();
+// const token = await getToken();
+// config.headers.Authorization = `Bearer ${token}`;
 
 export default api;
 ```
@@ -407,14 +400,13 @@ colors: {
 **Auth screen:**
 ```typescript
 // app/(auth)/login.tsx
+import { useSignIn, useOAuth } from '@clerk/clerk-expo';
+
 export default function LoginScreen() {
-  const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (!error) router.replace('/(tabs)');
-  };
-  const signInWithGoogle = async () => {
-    await supabase.auth.signInWithOAuth({ provider: 'google' });
-  };
+  const { signIn, setActive } = useSignIn();
+  const { startOAuthFlow } = useOAuth({ strategy: 'oauth_google' });
+
+  // Use Clerk hooks to handle sign-in and OAuth
 }
 ```
 
@@ -446,7 +438,7 @@ const { results } = await resp.json();
 for (const r of results.bindings) {
   // Fetch Wikipedia extract for each place
   const wiki = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(r.placeLabel.value)}`).then(r => r.json());
-  await supabase.from('places').upsert({
+  await db.insert(places).values({
     name: r.placeLabel.value, lat: r.lat.value, lng: r.lon.value,
     history_brief: wiki.extract, wikipedia_url: wiki.content_urls?.desktop?.page,
     images: r.image ? [r.image.value] : []
@@ -459,7 +451,7 @@ for (const r of results.bindings) {
 // GET /api/places?state=rajasthan&category=heritage&page=1&limit=20
 router.get('/places', async (req, res) => {
   const { state, category, page = 1, limit = 20, search } = req.query;
-  let query = supabase.from('places')
+  let query = db.select().from(places)
     .select('*, cities!inner(*, states!inner(*))')
     .range((+page - 1) * +limit, +page * +limit - 1);
 
@@ -474,7 +466,8 @@ router.get('/places', async (req, res) => {
 // GET /api/places/nearby?lat=28.6&lng=77.2&radius=10
 router.get('/places/nearby', async (req, res) => {
   const { lat, lng, radius = 10 } = req.query;
-  const { data } = await supabase.rpc('places_within_radius', {
+  // Using raw SQL query via Drizzle
+  const { data } = await db.execute(sql`SELECT * FROM places_within_radius(
     user_lat: +lat, user_lng: +lng, radius_km: +radius
   });
   res.json({ data });
@@ -497,7 +490,7 @@ for (const meal of meals) {
   for (let i = 1; i <= 20; i++) {
     if (m[`strIngredient${i}`]) ingredients.push({ name: m[`strIngredient${i}`], qty: m[`strMeasure${i}`] });
   }
-  await supabase.from('traditional_foods').upsert({
+  await db.insert(traditional_foods).values({
     name: m.strMeal, image_url: m.strMealThumb,
     category: m.strTags?.includes('Vegetarian') ? 'veg' : 'non-veg'
   });
@@ -524,19 +517,19 @@ router.get('/search', async (req, res) => {
   const results: Record<string, unknown[]> = {};
 
   if (typeList.includes('places')) {
-    const { data } = await supabase.from('places')
+    const { data } = await db.select().from('places')
       .select('id, name, category, images')
       .textSearch('name', q as string).limit(5);
     results.places = data ?? [];
   }
   if (typeList.includes('foods')) {
-    const { data } = await supabase.from('traditional_foods')
+    const { data } = await db.select().from('traditional_foods')
       .select('id, name, category, image_url')
       .textSearch('name', q as string).limit(5);
     results.foods = data ?? [];
   }
   if (typeList.includes('festivals')) {
-    const { data } = await supabase.from('festivals')
+    const { data } = await db.select().from('festivals')
       .select('id, name, month').ilike('name', `%${q}%`).limit(5);
     results.festivals = data ?? [];
   }
@@ -750,7 +743,7 @@ router.post('/trip/plan', requireAuth, aiLimiter, async (req, res) => {
   const itinerary = await generateTripPlan(params);
   await redis.set(cacheKey, JSON.stringify(itinerary), { ex: 86400 }); // 24hr cache
 
-  await supabase.from('ai_trips').insert({
+  await db.insert(ai_trips).values({
     user_id: req.user.id, budget: params.budget,
     duration: params.duration, preferences: params,
     generated_itinerary: itinerary,
@@ -1200,8 +1193,8 @@ GET  /api/restaurants?lat=&lng=&radius=&cuisine=
 
 ```bash
 # Backend (.env)
-SUPABASE_URL=https://xxxx.supabase.co
-SUPABASE_SERVICE_KEY=eyJh...       # service role key — never expose this
+DATABASE_URL=postgresql://neondb_owner:...@ep-falling-darkness-ai0mc8tn.aws.neon.tech/neondb
+CLERK_SECRET_KEY=eyJh...       # service role key — never expose this
 GROQ_API_KEY=gsk_...               # console.groq.com
 UPSTASH_REDIS_URL=https://...      # console.upstash.com
 UPSTASH_REDIS_TOKEN=...
@@ -1211,8 +1204,8 @@ PORT=3000
 
 # Frontend (.env)
 EXPO_PUBLIC_API_URL=https://your-app.onrender.com
-EXPO_PUBLIC_SUPABASE_URL=https://xxxx.supabase.co
-EXPO_PUBLIC_SUPABASE_ANON_KEY=eyJh...  # anon key — safe on client
+EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_...
+EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY=eyJh...  # anon key — safe on client
 ```
 
 ---
@@ -1223,8 +1216,8 @@ EXPO_PUBLIC_SUPABASE_ANON_KEY=eyJh...  # anon key — safe on client
 |---|---|---|
 | Mobile App | React Native + Expo | Free |
 | Backend Hosting | Render.com | Free (750 hrs/mo) |
-| Database | Supabase PostgreSQL | Free (500MB) |
-| Auth | Supabase Auth | Free (50K MAU) |
+| Database | NeonDB Serverless PostgreSQL | Free (500MB) |
+| Auth | Clerk Auth | Free (50K MAU) |
 | Cache | Upstash Redis | Free (10K cmd/day) |
 | AI / LLM | Groq (Llama 3.3 70B) | Free (500K tokens/day) |
 | Translation | Bhashini (Govt of India API) | Free for Indian devs |
