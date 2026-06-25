@@ -1,0 +1,111 @@
+import { pgTable, uuid, text, decimal, integer, jsonb, boolean, timestamp, index } from 'drizzle-orm/pg-core';
+import { sql } from 'drizzle-orm';
+
+export const states = pgTable('states', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  name: text('name').notNull(),
+  capital: text('capital'),
+  region: text('region'),
+  language: text('language'),
+  description: text('description'),
+  imageUrl: text('image_url'),
+  bestSeason: text('best_season'),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
+});
+
+export const cities = pgTable('cities', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  stateId: uuid('state_id').references(() => states.id),
+  name: text('name').notNull(),
+  lat: decimal('lat', { precision: 9, scale: 6 }),
+  lng: decimal('lng', { precision: 9, scale: 6 }),
+  description: text('description'),
+});
+
+export const places = pgTable('places', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  cityId: uuid('city_id').references(() => cities.id),
+  name: text('name').notNull(),
+  category: text('category'), // 'heritage' | 'temple' | 'nature' | 'beach' | 'hill'
+  lat: decimal('lat', { precision: 9, scale: 6 }),
+  lng: decimal('lng', { precision: 9, scale: 6 }),
+  rating: decimal('rating', { precision: 2, scale: 1 }),
+  entryFee: integer('entry_fee'),
+  timings: text('timings'),
+  historyBrief: text('history_brief'),
+  images: jsonb('images'),
+  wikipediaUrl: text('wikipedia_url'),
+}, (table) => {
+  return {
+    nameSearchIndex: index('places_fts').using('gin', sql`to_tsvector('english', ${table.name} || ' ' || COALESCE(${table.historyBrief}, ''))`),
+  };
+});
+
+export const historyEntries = pgTable('history_entries', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  placeId: uuid('place_id').references(() => places.id),
+  era: text('era'), // 'ancient' | 'medieval' | 'british' | 'modern'
+  year: integer('year'),
+  eventTitle: text('event_title').notNull(),
+  description: text('description'),
+  mediaUrl: text('media_url'),
+});
+
+export const traditionalFoods = pgTable('traditional_foods', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  stateId: uuid('state_id').references(() => states.id),
+  name: text('name').notNull(),
+  category: text('category'), // 'veg' | 'non-veg' | 'vegan' | 'sweet'
+  prepTime: integer('prep_time'),
+  difficulty: text('difficulty'),
+  description: text('description'),
+  imageUrl: text('image_url'),
+}, (table) => {
+  return {
+    nameSearchIndex: index('foods_fts').using('gin', sql`to_tsvector('english', ${table.name} || ' ' || COALESCE(${table.description}, ''))`),
+  };
+});
+
+export const recipes = pgTable('recipes', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  foodId: uuid('food_id').references(() => traditionalFoods.id),
+  ingredients: jsonb('ingredients'), // [{ name, qty, unit }]
+  steps: jsonb('steps'), // [{ step_no, instruction }]
+  nutritionalInfo: jsonb('nutritional_info'),
+  videoUrl: text('video_url'),
+});
+
+export const festivals = pgTable('festivals', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  stateId: uuid('state_id').references(() => states.id),
+  name: text('name').notNull(),
+  month: integer('month'),
+  durationDays: integer('duration_days'),
+  description: text('description'),
+  traditions: text('traditions'),
+  isNational: boolean('is_national').default(false),
+});
+
+export const hotels = pgTable('hotels', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  cityId: uuid('city_id').references(() => cities.id),
+  name: text('name').notNull(),
+  stars: integer('stars'),
+  pricePerNight: integer('price_per_night'),
+  amenities: jsonb('amenities'),
+  lat: decimal('lat', { precision: 9, scale: 6 }),
+  lng: decimal('lng', { precision: 9, scale: 6 }),
+  bookingUrl: text('booking_url'),
+  rating: decimal('rating', { precision: 2, scale: 1 }),
+  source: text('source'), // 'osm' | 'opentripmap' | 'manual'
+});
+
+export const aiTrips = pgTable('ai_trips', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  userId: text('user_id'), // clerk user IDs are string-based
+  budget: integer('budget'),
+  duration: integer('duration'),
+  preferences: jsonb('preferences'),
+  generatedItinerary: jsonb('generated_itinerary'),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
+});
