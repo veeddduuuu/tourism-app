@@ -3,8 +3,10 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
-
 import path from 'path';
+
+import router from './routes/index';
+import { errorHandler } from './middleware/errorHandler';
 
 dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
 
@@ -23,6 +25,17 @@ app.get('/health', (req, res) => {
     ts: new Date().toISOString()
   });
 });
+
+// API routes
+app.use('/api', router);
+
+// 404 catch-all
+app.use((req, res) => {
+  res.status(404).json({ error: 'Route not found' });
+});
+
+// Global error handler
+app.use(errorHandler);
 
 app.listen(port, () => {
   console.log(`Backend server is running on port ${port}`);
