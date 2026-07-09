@@ -6,6 +6,7 @@ import festivalsRouter from './festivals';
 import historyRouter from './history';
 import searchRouter from './search';
 import aiRouter from './ai';
+import translateRouter from './translate';
 
 const router = Router();
 
@@ -18,5 +19,6 @@ router.use('/festivals', festivalsRouter);
 router.use('/history', historyRouter);
 router.use('/search', searchRouter);
 router.use('/ai', aiRouter);
+router.use('/translate', translateRouter);
 
 export default router;

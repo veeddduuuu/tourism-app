@@ -49,7 +49,7 @@ export class TripGenerationError extends Error {
   }
 }
 
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+export const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 const TRIP_SYSTEM_PROMPT = `You are an expert India travel guide with 20+ years of experience.
 When given a travel request, respond ONLY with a JSON object in this exact format:

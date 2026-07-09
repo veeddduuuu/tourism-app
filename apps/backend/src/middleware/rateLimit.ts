@@ -23,3 +23,16 @@ export const aiLimiter = rateLimit({
     message: 'Too many AI requests from this IP, please try again after an hour'
   }
 });
+
+// Translation/ASR limiter — more generous than trip planning since calls are
+// cheap and often chained (e.g., translating many short UI strings).
+export const translationLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  limit: 60, // Limit each IP to 60 translation/ASR requests per `window`
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+  message: {
+    status: 429,
+    message: 'Too many translation requests from this IP, please try again after 15 minutes'
+  }
+});
