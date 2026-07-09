@@ -1,6 +1,18 @@
 version: '3.8'
 
 services:
+  frontend:
+    build:
+      context: .
+      dockerfile: apps/frontend/Dockerfile
+    working_dir: /app
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./apps/frontend:/app
+      - /app/node_modules
+    stdin_open: true
+    tty: true
   backend:
     build:
       context: .
