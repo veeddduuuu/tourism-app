@@ -7,7 +7,13 @@ import { aiTrips } from '../db/schema';
 import { aiLimiter } from '../middleware/rateLimit';
 import { optionalAuth } from '../middleware/auth';
 import { cacheGet, cacheSet } from '../db/redis';
-import { generateTripPlan, TripGenerationError, TripParams } from '../services/groq';
+import {
+  generateTripPlan,
+  TripGenerationError,
+  TripParams,
+  generateStory,
+  StoryGenerationError,
+} from '../services/groq';
 import { parseQuery } from '../utils/parseQuery';
 
 const router = Router();
@@ -147,6 +153,39 @@ router.get('/trip/:id', async (req: Request, res: Response, next: NextFunction) 
 
     res.json(rows[0]);
   } catch (err) {
+    next(err);
+  }
+});
+
+const STORY_CACHE_TTL = 604800; // 7 days
+
+const storyQuerySchema = z.object({
+  state: z.string().min(1).max(60),
+});
+
+// GET /ai/story?state=<state> — AI-generated narration for a state (cached).
+router.get('/story', aiLimiter, async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { state } = parseQuery(storyQuerySchema, req.query);
+    const key = `story:${state.trim().toLowerCase()}`;
+
+    const cached = await cacheGet(key);
+    if (cached) {
+      res.json({ ...cached, cached: true });
+      return;
+    }
+
+    const story = await generateStory(state);
+    const payload = { state, ...story, audioUrl: null };
+
+    await cacheSet(key, payload, STORY_CACHE_TTL);
+
+    res.json({ ...payload, cached: false });
+  } catch (err) {
+    if (err instanceof StoryGenerationError) {
+      res.status(502).json({ error: 'Story generation failed', detail: err.message });
+      return;
+    }
     next(err);
   }
 });

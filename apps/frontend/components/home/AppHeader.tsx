@@ -20,16 +20,19 @@ export default function AppHeader() {
       </View>
 
       <View style={styles.right}>
-        <TouchableOpacity style={styles.iconButton}>
+        <TouchableOpacity style={styles.iconButton} activeOpacity={0.7}>
           <Bell color="white" size={22} />
+          <View style={styles.badge} />
         </TouchableOpacity>
 
-        <Image
-          source={{
-            uri: "https://i.pravatar.cc/100",
-          }}
-          style={styles.avatar}
-        />
+        <View style={styles.avatarRing}>
+          <Image
+            source={{
+              uri: "https://i.pravatar.cc/100",
+            }}
+            style={styles.avatar}
+          />
+        </View>
       </View>
     </View>
   );
@@ -63,7 +66,34 @@ const styles = StyleSheet.create({
   },
 
   iconButton: {
-    marginRight: 12,
+    marginRight: 14,
+    width: 42,
+    height: 42,
+    borderRadius: 21,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(255,255,255,0.08)",
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.12)",
+  },
+
+  badge: {
+    position: "absolute",
+    top: 10,
+    right: 11,
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: THEME.colors.primary,
+    borderWidth: 1.5,
+    borderColor: "#09090B",
+  },
+
+  avatarRing: {
+    padding: 2,
+    borderRadius: 24,
+    borderWidth: 2,
+    borderColor: THEME.colors.primary,
   },
 
   avatar: {

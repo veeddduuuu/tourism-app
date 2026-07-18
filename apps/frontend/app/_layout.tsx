@@ -11,7 +11,10 @@ export default function RootLayout() {
         }}
       >
         <Stack.Screen name="welcome" />
+        <Stack.Screen name="guide-selector" />
         <Stack.Screen name="state-selector" />
+        <Stack.Screen name="trip-preferences" />
+        <Stack.Screen name="itinerary" />
         <Stack.Screen name="story" />
         <Stack.Screen name="(tabs)" />
       </Stack>

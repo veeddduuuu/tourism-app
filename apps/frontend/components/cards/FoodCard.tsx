@@ -1,9 +1,11 @@
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 import { Clock3, Heart, Star } from "lucide-react-native";
 
 import COLORS from "../../constants/colors";
+import PressableScale from "../common/PressableScale";
 
 interface Props {
   item: any;
@@ -11,12 +13,19 @@ interface Props {
 
 export default function FoodCard({ item }: Props) {
   return (
-    <TouchableOpacity style={styles.card}>
-      <Image source={{ uri: item.image }} style={styles.image} />
+    <PressableScale style={styles.card}>
+      <View style={styles.imageWrap}>
+        <Image source={{ uri: item.image }} style={styles.image} />
 
-      <TouchableOpacity style={styles.heart}>
-        <Heart color="white" size={18} />
-      </TouchableOpacity>
+        <LinearGradient
+          colors={["transparent", "rgba(0,0,0,0.35)"]}
+          style={StyleSheet.absoluteFillObject}
+        />
+
+        <TouchableOpacity style={styles.heart} activeOpacity={0.8}>
+          <Heart color="white" size={18} />
+        </TouchableOpacity>
+      </View>
 
       <View style={styles.content}>
         <View style={styles.ratingRow}>
@@ -43,7 +52,7 @@ export default function FoodCard({ item }: Props) {
           </View>
         </View>
       </View>
-    </TouchableOpacity>
+    </PressableScale>
   );
 }
 
@@ -53,6 +62,18 @@ const styles = StyleSheet.create({
     marginRight: 18,
     backgroundColor: "#18181B",
     borderRadius: 20,
+    borderWidth: 1,
+    borderColor: "#27272A",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.3,
+    shadowRadius: 14,
+    elevation: 8,
+  },
+
+  imageWrap: {
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
     overflow: "hidden",
   },
 
@@ -63,8 +84,14 @@ const styles = StyleSheet.create({
 
   heart: {
     position: "absolute",
-    right: 15,
-    top: 15,
+    right: 12,
+    top: 12,
+    width: 34,
+    height: 34,
+    borderRadius: 17,
+    backgroundColor: "rgba(0,0,0,0.35)",
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   content: {

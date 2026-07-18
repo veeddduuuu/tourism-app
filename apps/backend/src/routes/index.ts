@@ -7,6 +7,7 @@ import historyRouter from './history';
 import searchRouter from './search';
 import aiRouter from './ai';
 import translateRouter from './translate';
+import translationRouter from './translation';
 
 const router = Router();
 
@@ -20,5 +21,6 @@ router.use('/history', historyRouter);
 router.use('/search', searchRouter);
 router.use('/ai', aiRouter);
 router.use('/translate', translateRouter);
+router.use('/translation', translationRouter);
 
 export default router;

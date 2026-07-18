@@ -9,83 +9,105 @@ import {
 } from "react-native";
 import { router } from "expo-router";
 import { Audio } from "expo-av";
-import { stories } from "../data/stories";
+import * as Speech from "expo-speech";
+
+import { getStory } from "../services/endpoints";
+import { useApiQuery } from "../hooks/useApiQuery";
+import { useAppStore } from "../stores/appStore";
+
+// Bundled narration audio keyed by state (used when the API has no audioUrl).
+const LOCAL_AUDIO: Record<string, number> = {
+  Maharashtra: require("../assets/audio/maharashtra.mp3"),
+};
+
+// Backend stories carry no image, so keep the hero slot filled.
+const FALLBACK_IMAGE = {
+  uri: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=1200",
+};
 
 export default function StoryScreen() {
-  const story = stories.Maharashtra;
+  const destinationState = useAppStore((s: any) => s.destinationState) as
+    | string
+    | null;
+  const state = destinationState ?? "Maharashtra";
+
+  const { data: story, loading } = useApiQuery(
+    (signal) => getStory(state, signal),
+    [state]
+  );
 
   const [displayedText, setDisplayedText] = useState("");
 
+  // Typewriter effect — replays whenever new narration arrives.
   useEffect(() => {
-    let sound: Audio.Sound;
+    const narration = story?.narration;
+    setDisplayedText("");
+    if (!narration) return;
 
-    async function playStory() {
-      try {
-        const { sound: playback } = await Audio.Sound.createAsync(
-          story.audio
-        );
-
-        sound = playback;
-
-        await playback.playAsync();
-      } catch (err) {
-        console.log(err);
-      }
-    }
-
-    playStory();
-
-    // Typewriter Effect
     let index = 0;
-
     const interval = setInterval(() => {
-      if (index < story.narration.length) {
-        setDisplayedText(story.narration.substring(0, index + 1));
+      if (index < narration.length) {
+        setDisplayedText(narration.substring(0, index + 1));
         index++;
       } else {
         clearInterval(interval);
       }
     }, 35);
 
+    return () => clearInterval(interval);
+  }, [story?.narration]);
+
+  // Narration audio, in order of preference:
+  //   1. the API's hosted audioUrl (best quality),
+  //   2. a bundled clip for that state,
+  //   3. on-device text-to-speech of the narration (works for every state).
+  useEffect(() => {
+    let sound: Audio.Sound | undefined;
+    const narration = story?.narration;
+    const clip = story?.audioUrl ? { uri: story.audioUrl } : LOCAL_AUDIO[state];
+
+    (async () => {
+      try {
+        if (clip) {
+          const { sound: playback } = await Audio.Sound.createAsync(clip);
+          sound = playback;
+          await playback.playAsync();
+        } else if (narration) {
+          Speech.stop();
+          Speech.speak(narration, { rate: 0.92, pitch: 1.02 });
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    })();
+
     return () => {
-      clearInterval(interval);
       sound?.unloadAsync();
+      Speech.stop();
     };
-  }, []);
+  }, [story?.audioUrl, story?.narration, state]);
+
+  const title = story?.title ?? (loading ? "Summoning the story…" : `A Story of ${state}`);
+  const monument = story?.monument ?? state;
 
   return (
     <ScrollView style={styles.container}>
-      <Image
-        source={story.image}
-        style={styles.image}
-        resizeMode="cover"
-      />
+      <Image source={FALLBACK_IMAGE} style={styles.image} resizeMode="cover" />
 
       <View style={styles.content}>
-        <Text style={styles.heading}>
-          🎙 AI Storytelling
-        </Text>
+        <Text style={styles.heading}>🎙 AI Storytelling</Text>
 
-        <Text style={styles.title}>
-          {story.title}
-        </Text>
+        <Text style={styles.title}>{title}</Text>
 
-        <Text style={styles.monument}>
-          📍 {story.monument}
-        </Text>
+        <Text style={styles.monument}>📍 {monument}</Text>
 
         <Text style={styles.story}>
           {displayedText}
           <Text style={styles.cursor}>▋</Text>
         </Text>
 
-        <Pressable
-          style={styles.button}
-          onPress={() => router.back()}
-        >
-          <Text style={styles.buttonText}>
-            Continue Exploring →
-          </Text>
+        <Pressable style={styles.button} onPress={() => router.back()}>
+          <Text style={styles.buttonText}>Continue Exploring →</Text>
         </Pressable>
       </View>
     </ScrollView>

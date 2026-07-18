@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  ActivityIndicator,
   FlatList,
   SafeAreaView,
   StyleSheet,
@@ -9,15 +10,46 @@ import {
 } from "react-native";
 
 import FoodCard from "../../components/food/FoodCard";
-import { foodData } from "../../data/food";
+import { getFoods, type Food } from "../../services/endpoints";
+import { useApiQuery } from "../../hooks/useApiQuery";
+import { useAppStore } from "../../stores/appStore";
+
+// Foods have no image/rating column yet, so fill those gaps for the card.
+const FALLBACK_IMAGE = {
+  uri: "https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=1200",
+};
+
+// Maps a backend Food onto the exact shape FoodCard renders.
+function toCard(f: Food) {
+  return {
+    id: f.id,
+    name: f.name,
+    image: f.imageUrl ? { uri: f.imageUrl } : FALLBACK_IMAGE,
+    category: f.category ?? "",
+    rating: "4.7",
+    description: f.description ?? "",
+  };
+}
 
 export default function FoodScreen() {
-  console.log(foodData);
+  const destinationState = useAppStore((s: any) => s.destinationState) as
+    | string
+    | null;
+
+  const { data, loading } = useApiQuery(
+    (signal) =>
+      getFoods(destinationState ? { state: destinationState } : {}, signal),
+    [destinationState]
+  );
+
+  const items = (data?.items ?? []).map(toCard);
+  const place = destinationState ?? "India";
+
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        data={foodData}
-        keyExtractor={(item) => item.id}
+        data={items}
+        keyExtractor={(item) => String(item.id)}
         ListHeaderComponent={
           <>
             <Text style={styles.heading}>
@@ -25,7 +57,7 @@ export default function FoodScreen() {
             </Text>
 
             <Text style={styles.subheading}>
-              Taste the authentic flavours of Maharashtra.
+              Taste the authentic flavours of {place}.
             </Text>
 
             <TextInput
@@ -56,6 +88,13 @@ export default function FoodScreen() {
         renderItem={({ item }) => (
           <FoodCard item={item} />
         )}
+        ListEmptyComponent={
+          loading ? (
+            <ActivityIndicator color="#0A84FF" style={{ marginTop: 40 }} />
+          ) : (
+            <Text style={styles.empty}>No dishes found for {place} yet.</Text>
+          )
+        }
         contentContainerStyle={{
           padding: 20,
           paddingBottom: 120,
@@ -110,5 +149,12 @@ const styles = StyleSheet.create({
 
   categoryText: {
     fontWeight: "600",
+  },
+
+  empty: {
+    textAlign: "center",
+    color: "#888",
+    marginTop: 40,
+    fontSize: 15,
   },
 });
