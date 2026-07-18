@@ -1,3 +1,4 @@
+import { View } from "react-native";
 import { Tabs } from "expo-router";
 import {
   CalendarDays,
@@ -7,9 +8,11 @@ import {
   UtensilsCrossed,
 } from "lucide-react-native";
 import COLORS from "../../constants/colors";
+import GuideCompanion from "../../components/guide/GuideCompanion";
 
 export default function TabLayout() {
   return (
+    <View style={{ flex: 1 }}>
     <Tabs
       screenOptions={{
         headerShown: false,
@@ -70,5 +73,8 @@ export default function TabLayout() {
         }}
       />
     </Tabs>
+
+      <GuideCompanion />
+    </View>
   );
 }

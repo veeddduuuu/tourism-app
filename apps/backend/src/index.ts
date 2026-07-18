@@ -1,14 +1,12 @@
+import './config'; // must be first: loads .env before db/index.ts reads DATABASE_URL
+
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import dotenv from 'dotenv';
-import path from 'path';
 
 import router from './routes/index';
 import { errorHandler } from './middleware/errorHandler';
-
-dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -16,7 +14,7 @@ const port = process.env.PORT || 3000;
 app.use(helmet());
 app.use(cors());
 app.use(morgan('dev'));
-app.use(express.json());
+app.use(express.json({ limit: '10mb' })); // base64 audio for /api/translation can exceed the default 100kb
 
 // Health check endpoint
 app.get('/health', (req, res) => {

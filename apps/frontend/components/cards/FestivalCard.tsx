@@ -1,11 +1,8 @@
 import React from "react";
-import {
-    ImageBackground,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
-} from "react-native";
+import { ImageBackground, StyleSheet, Text, View } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+
+import PressableScale from "../common/PressableScale";
 
 interface Props {
   item: any;
@@ -13,12 +10,16 @@ interface Props {
 
 export default function FestivalCard({ item }: Props) {
   return (
-    <TouchableOpacity style={styles.card} activeOpacity={0.9}>
+    <PressableScale style={styles.card}>
       <ImageBackground
         source={{ uri: item.image }}
         style={styles.image}
         imageStyle={{ borderRadius: 24 }}
       >
+        <LinearGradient
+          colors={["rgba(0,0,0,0.1)", "rgba(0,0,0,0.65)"]}
+          style={StyleSheet.absoluteFillObject}
+        />
         <View style={styles.overlay}>
           <View style={styles.badge}>
             <Text style={styles.badgeText}>{item.month}</Text>
@@ -33,7 +34,7 @@ export default function FestivalCard({ item }: Props) {
           </View>
         </View>
       </ImageBackground>
-    </TouchableOpacity>
+    </PressableScale>
   );
 }
 
@@ -44,6 +45,11 @@ const styles = StyleSheet.create({
     marginRight: 18,
     borderRadius: 24,
     overflow: "hidden",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.35,
+    shadowRadius: 14,
+    elevation: 8,
   },
 
   image: {
@@ -55,7 +61,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-between",
     padding: 20,
-    backgroundColor: "rgba(0,0,0,0.35)",
   },
 
   badge: {

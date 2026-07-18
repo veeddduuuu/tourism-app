@@ -6,26 +6,58 @@ import {
     ImageBackground,
     StyleSheet,
     Text,
-    TouchableOpacity,
     View,
 } from "react-native";
-import { HERO_DATA } from "../../constants/heroData";
 import THEME from "../../constants/theme";
+import PressableScale from "../common/PressableScale";
+import { getPlaces, type Place } from "../../services/endpoints";
+import { useApiQuery } from "../../hooks/useApiQuery";
+import { useAppStore } from "../../stores/appStore";
 
 const { width } = Dimensions.get("window");
 
 const CARD_WIDTH = width * 0.9;
+
+const PLACEHOLDER_IMAGE =
+  "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=1200";
+
+// Maps a backend Place onto the shape the hero slide already renders. `image`
+// is an { uri } object so the existing `source={item.image}` markup is unchanged.
+function toHero(p: Place) {
+  return {
+    id: p.id,
+    title: p.name,
+    subtitle: p.historyBrief ?? p.stateName ?? "",
+    image: { uri: p.images[0] ?? PLACEHOLDER_IMAGE },
+  };
+}
 
 export default function HeroCarousel() {
   const flatListRef = useRef<FlatList>(null);
 
   const [activeIndex, setActiveIndex] = useState(0);
 
+  const destinationState = useAppStore((s: any) => s.destinationState) as
+    | string
+    | null;
+
+  const { data } = useApiQuery(
+    (signal) =>
+      getPlaces(
+        destinationState ? { state: destinationState, limit: 8 } : { limit: 8 },
+        signal
+      ),
+    [destinationState]
+  );
+  const items = (data?.items ?? []).map(toHero);
+
   useEffect(() => {
+    if (items.length === 0) return;
+
     const timer = setInterval(() => {
       let next = activeIndex + 1;
 
-      if (next >= HERO_DATA.length) next = 0;
+      if (next >= items.length) next = 0;
 
       flatListRef.current?.scrollToIndex({
         index: next,
@@ -36,7 +68,7 @@ export default function HeroCarousel() {
     }, 4000);
 
     return () => clearInterval(timer);
-  }, [activeIndex]);
+  }, [activeIndex, items.length]);
 
   return (
     <View>
@@ -47,7 +79,7 @@ export default function HeroCarousel() {
         decelerationRate="fast"
         snapToAlignment="center"
         showsHorizontalScrollIndicator={false}
-        data={HERO_DATA}
+        data={items}
         keyExtractor={(item) => item.id}
         getItemLayout={(_, index) => ({
           length: width,
@@ -86,9 +118,9 @@ export default function HeroCarousel() {
 
                   <Text style={styles.subtitle}>{item.subtitle}</Text>
 
-                  <TouchableOpacity style={styles.button}>
+                  <PressableScale style={styles.button}>
                     <Text style={styles.buttonText}>Explore Now →</Text>
-                  </TouchableOpacity>
+                  </PressableScale>
                 </View>
               </ImageBackground>
             </View>
@@ -96,7 +128,7 @@ export default function HeroCarousel() {
         )}
       />
       <View style={styles.dots}>
-        {HERO_DATA.map((_, index) => (
+        {items.map((_, index) => (
           <View
             key={index}
             style={[styles.dot, activeIndex === index && styles.activeDot]}

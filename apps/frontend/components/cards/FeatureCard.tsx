@@ -1,9 +1,11 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
-export default function FeatureCard({ title, subtitle, Icon, color }: any) {
+import PressableScale from "../common/PressableScale";
+
+export default function FeatureCard({ title, subtitle, Icon, color, onPress }: any) {
   return (
-    <TouchableOpacity style={styles.card} activeOpacity={0.8}>
+    <PressableScale style={styles.card} onPress={onPress}>
       <View style={[styles.iconContainer, { backgroundColor: color + "22" }]}>
         <Icon color={color} size={24} />
       </View>
@@ -11,7 +13,7 @@ export default function FeatureCard({ title, subtitle, Icon, color }: any) {
       <Text style={styles.title}>{title}</Text>
 
       <Text style={styles.subtitle}>{subtitle}</Text>
-    </TouchableOpacity>
+    </PressableScale>
   );
 }
 
@@ -24,6 +26,11 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     borderWidth: 1,
     borderColor: "#27272A",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.25,
+    shadowRadius: 12,
+    elevation: 6,
   },
 
   iconContainer: {

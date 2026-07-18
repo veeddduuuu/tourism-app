@@ -1,0 +1,9 @@
+{
+  location,
+  weather,
+  language,
+  interests,
+  mood,
+  currentFestival,
+  timeOfDay
+}

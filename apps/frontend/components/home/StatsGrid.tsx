@@ -65,14 +65,24 @@ const styles = StyleSheet.create({
     borderWidth: 1,
 
     borderColor: "#27272A",
+
+    shadowColor: "#000",
+
+    shadowOffset: { width: 0, height: 8 },
+
+    shadowOpacity: 0.25,
+
+    shadowRadius: 12,
+
+    elevation: 6,
   },
 
   circle: {
-    width: 45,
+    width: 46,
 
-    height: 45,
+    height: 46,
 
-    borderRadius: 25,
+    borderRadius: 23,
 
     marginBottom: 14,
   },

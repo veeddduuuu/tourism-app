@@ -1,10 +1,12 @@
 import { router } from "expo-router";
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 import { Heart, MapPin, Star } from "lucide-react-native";
 
 import COLORS from "../../constants/colors";
+import PressableScale from "../common/PressableScale";
 
 interface Props {
   item: any;
@@ -12,37 +14,43 @@ interface Props {
 
 export default function DestinationCard({ item }: Props) {
   return (
-    <TouchableOpacity
+    <PressableScale
       style={styles.card}
-      activeOpacity={0.9}
       onPress={() => router.push(`/destination/${item.id}`)}
     >
-      <Image source={{ uri: item.image }} style={styles.image} />
+      <View style={styles.imageWrap}>
+        <Image source={{ uri: item.image }} style={styles.image} />
 
-      <TouchableOpacity style={styles.heart}>
-        <Heart color="white" size={18} />
-      </TouchableOpacity>
+        <LinearGradient
+          colors={["transparent", "rgba(0,0,0,0.35)"]}
+          style={styles.imageScrim}
+        />
+
+        <TouchableOpacity style={styles.heart} activeOpacity={0.8}>
+          <Heart color="white" size={18} />
+        </TouchableOpacity>
+
+        <View style={styles.ratingBadge}>
+          <Star color="#FFD43B" fill="#FFD43B" size={13} />
+          <Text style={styles.ratingText}>{item.rating}</Text>
+        </View>
+      </View>
 
       <View style={styles.info}>
-        <Text style={styles.title}>{item.title}</Text>
+        <Text style={styles.title} numberOfLines={1}>
+          {item.title}
+        </Text>
 
         <View style={styles.row}>
           <MapPin color={COLORS.primary} size={14} />
-
           <Text style={styles.state}>{item.state}</Text>
         </View>
 
         <View style={styles.bottom}>
-          <View style={styles.rating}>
-            <Star color="#FFD43B" fill="#FFD43B" size={14} />
-
-            <Text style={styles.ratingText}>{item.rating}</Text>
-          </View>
-
           <Text style={styles.price}>{item.price}</Text>
         </View>
       </View>
-    </TouchableOpacity>
+    </PressableScale>
   );
 }
 
@@ -50,9 +58,21 @@ const styles = StyleSheet.create({
   card: {
     width: 250,
     backgroundColor: "#18181B",
-    borderRadius: 20,
-    overflow: "hidden",
+    borderRadius: 22,
     marginRight: 18,
+    borderWidth: 1,
+    borderColor: "#27272A",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.3,
+    shadowRadius: 14,
+    elevation: 8,
+  },
+
+  imageWrap: {
+    borderTopLeftRadius: 22,
+    borderTopRightRadius: 22,
+    overflow: "hidden",
   },
 
   image: {
@@ -60,10 +80,39 @@ const styles = StyleSheet.create({
     height: 180,
   },
 
+  imageScrim: {
+    ...StyleSheet.absoluteFillObject,
+  },
+
   heart: {
     position: "absolute",
-    top: 15,
-    right: 15,
+    top: 12,
+    right: 12,
+    width: 34,
+    height: 34,
+    borderRadius: 17,
+    backgroundColor: "rgba(0,0,0,0.35)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  ratingBadge: {
+    position: "absolute",
+    bottom: 12,
+    left: 12,
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.55)",
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 12,
+  },
+
+  ratingText: {
+    color: "white",
+    marginLeft: 5,
+    fontWeight: "700",
+    fontSize: 12,
   },
 
   info: {
@@ -88,25 +137,15 @@ const styles = StyleSheet.create({
   },
 
   bottom: {
-    marginTop: 15,
+    marginTop: 14,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
   },
 
-  rating: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-
-  ratingText: {
-    color: "white",
-    marginLeft: 5,
-    fontWeight: "600",
-  },
-
   price: {
     color: COLORS.primary,
-    fontWeight: "700",
+    fontWeight: "800",
+    fontSize: 16,
   },
 });
