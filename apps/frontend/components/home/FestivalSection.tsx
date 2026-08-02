@@ -6,6 +6,7 @@ import SectionHeader from "../common/SectionHeader";
 
 import { getFestivals, type Festival } from "../../services/endpoints";
 import { useApiQuery } from "../../hooks/useApiQuery";
+import { CardSkeletonRow } from "../common/Skeleton";
 
 const MONTHS = [
   "January", "February", "March", "April", "May", "June",
@@ -34,7 +35,7 @@ function toCard(f: Festival) {
 }
 
 export default function FestivalSection() {
-  const { data } = useApiQuery(
+  const { data, loading } = useApiQuery(
     (signal) => getFestivals({ limit: 20 }, signal),
     []
   );
@@ -44,16 +45,20 @@ export default function FestivalSection() {
     <>
       <SectionHeader title="Upcoming Festivals" showViewAll />
 
-      <FlatList
-        horizontal
-        data={items}
-        keyExtractor={(item) => String(item.id)}
-        renderItem={({ item }) => <FestivalCard item={item} />}
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{
-          paddingHorizontal: 20,
-        }}
-      />
+      {loading && items.length === 0 ? (
+        <CardSkeletonRow width={290} height={200} radius={24} />
+      ) : (
+        <FlatList
+          horizontal
+          data={items}
+          keyExtractor={(item) => String(item.id)}
+          renderItem={({ item }) => <FestivalCard item={item} />}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingHorizontal: 20,
+          }}
+        />
+      )}
     </>
   );
 }

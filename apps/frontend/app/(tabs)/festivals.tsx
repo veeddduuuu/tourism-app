@@ -1,15 +1,18 @@
 import React from "react";
 import {
   ActivityIndicator,
-  SafeAreaView,
   FlatList,
   Text,
   StyleSheet,
+  View,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { LinearGradient } from "expo-linear-gradient";
 
 import FestivalCard from "../../components/festival/FestivalCard";
 import { getFestivals, type Festival } from "../../services/endpoints";
 import { useApiQuery } from "../../hooks/useApiQuery";
+import COLORS from "../../constants/colors";
 
 const MONTHS = [
   "January", "February", "March", "April", "May", "June",
@@ -47,62 +50,69 @@ export default function FestivalsScreen() {
   const items = (data?.items ?? []).map(toCard);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <FlatList
-        data={items}
-        keyExtractor={(item) => String(item.id)}
-        renderItem={({ item }) => (
-          <FestivalCard item={item} />
-        )}
-        ListHeaderComponent={
-          <>
-            <Text style={styles.heading}>
-              🎉 Festivals
-            </Text>
-
-            <Text style={styles.subheading}>
-              Experience India's colourful traditions.
-            </Text>
-          </>
-        }
-        ListEmptyComponent={
-          loading ? (
-            <ActivityIndicator color="#0A84FF" style={{ marginTop: 40 }} />
-          ) : (
-            <Text style={styles.empty}>No festivals found.</Text>
-          )
-        }
-        contentContainerStyle={{
-          padding: 20,
-          paddingBottom: 120,
-        }}
+    <View style={styles.container}>
+      <LinearGradient
+        colors={[COLORS.background, "#131F37", "#0B1326"]}
+        style={StyleSheet.absoluteFill}
       />
-    </SafeAreaView>
+      <SafeAreaView style={{ flex: 1 }} edges={["top"]}>
+        <FlatList
+          data={items}
+          keyExtractor={(item) => String(item.id)}
+          renderItem={({ item }) => (
+            <FestivalCard item={item} />
+          )}
+          ListHeaderComponent={
+            <>
+              <Text style={styles.heading}>
+                🎉 Festivals
+              </Text>
+
+              <Text style={styles.subheading}>
+                Experience India's colourful traditions.
+              </Text>
+            </>
+          }
+          ListEmptyComponent={
+            loading ? (
+              <ActivityIndicator color={COLORS.saffron} style={{ marginTop: 40 }} />
+            ) : (
+              <Text style={styles.empty}>No festivals found.</Text>
+            )
+          }
+          contentContainerStyle={{
+            padding: 20,
+            paddingBottom: 120,
+          }}
+        />
+      </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F7F8FA",
+    backgroundColor: "#0B1326",
   },
 
   heading: {
-    fontSize: 34,
+    fontSize: 28,
     fontWeight: "800",
+    color: COLORS.text,
   },
 
   subheading: {
-    marginTop: 8,
+    marginTop: 6,
     marginBottom: 25,
-    color: "#666",
-    fontSize: 16,
+    color: COLORS.subtitle,
+    fontSize: 14,
   },
 
   empty: {
     textAlign: "center",
-    color: "#888",
+    color: COLORS.subtitle,
     marginTop: 40,
-    fontSize: 15,
+    fontSize: 14,
   },
 });

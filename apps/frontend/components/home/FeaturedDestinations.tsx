@@ -6,6 +6,7 @@ import SectionHeader from "../common/SectionHeader";
 
 import { getPlaces, type Place } from "../../services/endpoints";
 import { useApiQuery } from "../../hooks/useApiQuery";
+import { CardSkeletonRow } from "../common/Skeleton";
 
 // Fallback artwork if a place has no image, matching the previous behaviour.
 const PLACEHOLDER_IMAGE =
@@ -25,7 +26,7 @@ function toCard(p: Place) {
 }
 
 export default function FeaturedDestinations() {
-  const { data } = useApiQuery(
+  const { data, loading } = useApiQuery(
     (signal) => getPlaces({ limit: 20 }, signal),
     []
   );
@@ -36,16 +37,20 @@ export default function FeaturedDestinations() {
     <>
       <SectionHeader title="Featured Destinations" />
 
-      <FlatList
-        horizontal
-        data={items}
-        keyExtractor={(item) => String(item.id)}
-        showsHorizontalScrollIndicator={false}
-        renderItem={({ item }) => <DestinationCard item={item} />}
-        contentContainerStyle={{
-          paddingHorizontal: 20,
-        }}
-      />
+      {loading && items.length === 0 ? (
+        <CardSkeletonRow width={250} height={280} radius={22} />
+      ) : (
+        <FlatList
+          horizontal
+          data={items}
+          keyExtractor={(item) => String(item.id)}
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item }) => <DestinationCard item={item} />}
+          contentContainerStyle={{
+            paddingHorizontal: 20,
+          }}
+        />
+      )}
     </>
   );
 }

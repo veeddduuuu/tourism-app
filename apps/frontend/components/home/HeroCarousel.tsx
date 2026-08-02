@@ -1,4 +1,6 @@
 import { LinearGradient } from "expo-linear-gradient";
+import { router } from "expo-router";
+import { MapPin, Star } from "lucide-react-native";
 import React, { useEffect, useRef, useState } from "react";
 import {
     Dimensions,
@@ -10,6 +12,7 @@ import {
 } from "react-native";
 import THEME from "../../constants/theme";
 import PressableScale from "../common/PressableScale";
+import { Skeleton } from "../common/Skeleton";
 import { getPlaces, type Place } from "../../services/endpoints";
 import { useApiQuery } from "../../hooks/useApiQuery";
 import { useAppStore } from "../../stores/appStore";
@@ -27,7 +30,8 @@ function toHero(p: Place) {
   return {
     id: p.id,
     title: p.name,
-    subtitle: p.historyBrief ?? p.stateName ?? "",
+    location: p.stateName ?? "India",
+    rating: p.rating ?? null,
     image: { uri: p.images[0] ?? PLACEHOLDER_IMAGE },
   };
 }
@@ -41,7 +45,7 @@ export default function HeroCarousel() {
     | string
     | null;
 
-  const { data } = useApiQuery(
+  const { data, loading } = useApiQuery(
     (signal) =>
       getPlaces(
         destinationState ? { state: destinationState, limit: 8 } : { limit: 8 },
@@ -69,6 +73,14 @@ export default function HeroCarousel() {
 
     return () => clearInterval(timer);
   }, [activeIndex, items.length]);
+
+  if (loading && items.length === 0) {
+    return (
+      <View style={styles.skeletonWrap}>
+        <Skeleton style={styles.skeletonHero} />
+      </View>
+    );
+  }
 
   return (
     <View>
@@ -110,15 +122,34 @@ export default function HeroCarousel() {
                 />
 
                 <View style={styles.content}>
-                  <View style={styles.badge}>
-                    <Text style={styles.badgeText}>Featured</Text>
+                  <View style={styles.badgeRow}>
+                    <View style={styles.badge}>
+                      <Text style={styles.badgeText}>Featured</Text>
+                    </View>
+
+                    {item.rating != null && (
+                      <View style={styles.ratingChip}>
+                        <Star color="#FFD43B" fill="#FFD43B" size={13} />
+                        <Text style={styles.ratingChipText}>{item.rating}</Text>
+                      </View>
+                    )}
                   </View>
 
-                  <Text style={styles.title}>{item.title}</Text>
+                  <Text style={styles.title} numberOfLines={1}>
+                    {item.title}
+                  </Text>
 
-                  <Text style={styles.subtitle}>{item.subtitle}</Text>
+                  <View style={styles.locRow}>
+                    <MapPin color="#E4E4E7" size={14} />
+                    <Text style={styles.subtitle} numberOfLines={1}>
+                      {item.location}
+                    </Text>
+                  </View>
 
-                  <PressableScale style={styles.button}>
+                  <PressableScale
+                    style={styles.button}
+                    onPress={() => router.push(`/destination/${item.id}` as any)}
+                  >
                     <Text style={styles.buttonText}>Explore Now →</Text>
                   </PressableScale>
                 </View>
@@ -171,12 +202,52 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 5,
     borderRadius: 20,
-    marginBottom: 12,
   },
 
   badgeText: {
     color: "white",
     fontWeight: "700",
+  },
+
+  badgeRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    marginBottom: 12,
+  },
+
+  ratingChip: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+    backgroundColor: "rgba(0,0,0,0.5)",
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 14,
+  },
+
+  ratingChipText: {
+    color: "white",
+    fontWeight: "700",
+    fontSize: 12,
+  },
+
+  locRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 5,
+    marginTop: 8,
+  },
+
+  skeletonWrap: {
+    alignItems: "center",
+    marginTop: 4,
+  },
+
+  skeletonHero: {
+    width: CARD_WIDTH,
+    height: 300,
+    borderRadius: 25,
   },
 
   title: {

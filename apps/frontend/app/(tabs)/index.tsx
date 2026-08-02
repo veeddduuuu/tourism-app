@@ -5,28 +5,31 @@ import { LinearGradient } from "expo-linear-gradient";
 import Animated, { FadeInDown } from "react-native-reanimated";
 
 import StoryCard from "../../components/story/StoryCard";
+import PassportWidget from "../../components/home/PassportWidget";
 import AppHeader from "../../components/home/AppHeader";
 import GlassSearch from "../../components/home/GlassSearch";
 import HeroCarousel from "../../components/home/HeroCarousel";
-import StatsGrid from "../../components/home/StatsGrid";
-import FeaturedGrid from "../../components/home/FeaturedGrid";
+import VirtualFestivalSection from "../../components/home/VirtualFestivalSection";
 import FeaturedDestinations from "../../components/home/FeaturedDestinations";
 import PopularFoods from "../../components/home/PopularFoods";
 import FestivalSection from "../../components/home/FestivalSection";
 import HistorySection from "../../components/home/HistorySection";
+import TryOnSection from "../../components/home/TryOnSection";
+import FeaturedGrid from "../../components/home/FeaturedGrid";
 
 // Each section fades + slides up in sequence for a smooth, staggered reveal.
 const sections = [
   AppHeader,
   GlassSearch,
+  StoryCard, // High-Impact AI Storytelling Hero
+  PassportWidget, // Interactive Cultural Passport progress widget
   HeroCarousel,
-  StoryCard,
-  StatsGrid,
-  FeaturedGrid,
+  VirtualFestivalSection, // Interactive 360° Portal trigger section
   FeaturedDestinations,
   PopularFoods,
   FestivalSection,
   HistorySection,
+  TryOnSection, // High-Impact Purple Virtual Try-On
 ];
 
 export default function HomeScreen() {
@@ -37,7 +40,7 @@ export default function HomeScreen() {
       resizeMode="cover"
     >
       <LinearGradient
-        colors={["rgba(9,9,11,0.55)", "rgba(9,9,11,0.82)", "rgba(9,9,11,0.96)"]}
+        colors={["rgba(11,19,38,0.65)", "rgba(11,19,38,0.90)", "rgba(11,19,38,0.98)"]}
         locations={[0, 0.45, 1]}
         style={StyleSheet.absoluteFill}
       />
@@ -67,7 +70,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    backgroundColor: "#09090B",
+    backgroundColor: "#0B1326",
   },
 
   container: {
@@ -75,6 +78,6 @@ const styles = StyleSheet.create({
   },
 
   scrollContent: {
-    paddingBottom: 120,
+    paddingBottom: 130,
   },
 });

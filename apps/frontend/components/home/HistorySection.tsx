@@ -6,6 +6,7 @@ import SectionHeader from "../common/SectionHeader";
 
 import { getHistory, type HistoryEntry } from "../../services/endpoints";
 import { useApiQuery } from "../../hooks/useApiQuery";
+import { CardSkeletonRow } from "../common/Skeleton";
 
 function formatYear(year: number | null): string {
   if (year == null) return "";
@@ -23,7 +24,7 @@ function toCard(h: HistoryEntry) {
 }
 
 export default function HistorySection() {
-  const { data } = useApiQuery(
+  const { data, loading } = useApiQuery(
     (signal) => getHistory({ limit: 20 }, signal),
     []
   );
@@ -33,16 +34,20 @@ export default function HistorySection() {
     <>
       <SectionHeader title="Journey Through History" showViewAll />
 
-      <FlatList
-        horizontal
-        data={items}
-        keyExtractor={(item) => String(item.id)}
-        renderItem={({ item }) => <TimelineCard item={item} />}
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{
-          paddingHorizontal: 20,
-        }}
-      />
+      {loading && items.length === 0 ? (
+        <CardSkeletonRow width={240} height={170} radius={20} />
+      ) : (
+        <FlatList
+          horizontal
+          data={items}
+          keyExtractor={(item) => String(item.id)}
+          renderItem={({ item }) => <TimelineCard item={item} />}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingHorizontal: 20,
+          }}
+        />
+      )}
     </>
   );
 }

@@ -49,7 +49,7 @@ export default function SectionHeader({
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 20,
-    marginTop: 30,
+    marginTop: 34,
     marginBottom: 18,
     flexDirection: "row",
     justifyContent: "space-between",
@@ -59,16 +59,17 @@ const styles = StyleSheet.create({
   title: {
     color: COLORS.white,
     fontSize: 22,
-    fontWeight: "700",
+    fontWeight: "800",
+    letterSpacing: -0.2,
   },
 
   highlight: {
-    color: COLORS.primary,
+    color: COLORS.saffron,
   },
 
   viewAll: {
-    color: COLORS.primary,
-    fontSize: 15,
-    fontWeight: "600",
+    color: COLORS.saffron,
+    fontSize: 14,
+    fontWeight: "700",
   },
 });

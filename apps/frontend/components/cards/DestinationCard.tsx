@@ -31,7 +31,7 @@ export default function DestinationCard({ item }: Props) {
         </TouchableOpacity>
 
         <View style={styles.ratingBadge}>
-          <Star color="#FFD43B" fill="#FFD43B" size={13} />
+          <Star color={COLORS.saffron} fill={COLORS.saffron} size={13} />
           <Text style={styles.ratingText}>{item.rating}</Text>
         </View>
       </View>
@@ -57,27 +57,28 @@ export default function DestinationCard({ item }: Props) {
 const styles = StyleSheet.create({
   card: {
     width: 250,
-    backgroundColor: "#18181B",
-    borderRadius: 22,
+    backgroundColor: COLORS.card,
+    borderRadius: 24,
     marginRight: 18,
     borderWidth: 1,
-    borderColor: "#27272A",
+    borderColor: COLORS.glassBorder,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.3,
-    shadowRadius: 14,
-    elevation: 8,
+    shadowOpacity: 0.35,
+    shadowRadius: 16,
+    elevation: 10,
+    overflow: "hidden",
   },
 
   imageWrap: {
-    borderTopLeftRadius: 22,
-    borderTopRightRadius: 22,
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
     overflow: "hidden",
   },
 
   image: {
     width: "100%",
-    height: 180,
+    height: 170,
   },
 
   imageScrim: {
@@ -91,7 +92,9 @@ const styles = StyleSheet.create({
     width: 34,
     height: 34,
     borderRadius: 17,
-    backgroundColor: "rgba(0,0,0,0.35)",
+    backgroundColor: "rgba(11, 19, 38, 0.55)",
+    borderWidth: 1,
+    borderColor: "rgba(255, 255, 255, 0.15)",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -102,7 +105,9 @@ const styles = StyleSheet.create({
     left: 12,
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.55)",
+    backgroundColor: "rgba(11, 19, 38, 0.75)",
+    borderWidth: 1,
+    borderColor: "rgba(255, 153, 51, 0.3)",
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 12,
@@ -116,7 +121,7 @@ const styles = StyleSheet.create({
   },
 
   info: {
-    padding: 15,
+    padding: 16,
   },
 
   title: {
@@ -132,8 +137,9 @@ const styles = StyleSheet.create({
   },
 
   state: {
-    color: "#A1A1AA",
+    color: COLORS.subtitle,
     marginLeft: 5,
+    fontSize: 13,
   },
 
   bottom: {
@@ -144,7 +150,7 @@ const styles = StyleSheet.create({
   },
 
   price: {
-    color: COLORS.primary,
+    color: COLORS.saffron,
     fontWeight: "800",
     fontSize: 16,
   },

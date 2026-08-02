@@ -3,6 +3,7 @@
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
+    "dev": "expo start --web",
     "start": "expo start --tunnel",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "expo start --android",
@@ -12,10 +13,12 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
+    "@gradio/client": "^2.3.1",
     "@react-navigation/bottom-tabs": "^7.4.0",
     "@react-navigation/elements": "^2.6.3",
     "@react-navigation/native": "^7.1.8",
     "@rnmapbox/maps": "^10.3.2",
+    "buffer": "^6.0.3",
     "expo": "~54.0.34",
     "expo-av": "~16.0.8",
     "expo-blur": "^57.0.0",
@@ -23,6 +26,7 @@
     "expo-font": "~14.0.11",
     "expo-haptics": "~15.0.8",
     "expo-image": "~3.0.11",
+    "expo-image-picker": "~17.0.11",
     "expo-linear-gradient": "~15.0.8",
     "expo-linking": "~8.0.12",
     "expo-localization": "~17.0.9",

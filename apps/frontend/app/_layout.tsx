@@ -15,7 +15,10 @@ export default function RootLayout() {
         <Stack.Screen name="state-selector" />
         <Stack.Screen name="trip-preferences" />
         <Stack.Screen name="itinerary" />
+        <Stack.Screen name="try-on" />
         <Stack.Screen name="story" />
+        <Stack.Screen name="passport" />
+        <Stack.Screen name="virtual-experience" />
         <Stack.Screen name="(tabs)" />
       </Stack>
       

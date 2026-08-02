@@ -6,6 +6,7 @@ import SectionHeader from "../common/SectionHeader";
 
 import { getFoods, type Food } from "../../services/endpoints";
 import { useApiQuery } from "../../hooks/useApiQuery";
+import { CardSkeletonRow } from "../common/Skeleton";
 
 const PLACEHOLDER_IMAGE =
   "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=1200";
@@ -24,23 +25,30 @@ function toCard(f: Food) {
 }
 
 export default function PopularFoods() {
-  const { data } = useApiQuery((signal) => getFoods({ limit: 20 }, signal), []);
+  const { data, loading } = useApiQuery(
+    (signal) => getFoods({ limit: 20 }, signal),
+    []
+  );
   const items = (data?.items ?? []).map(toCard);
 
   return (
     <>
       <SectionHeader title="Popular Foods" showViewAll />
 
-      <FlatList
-        horizontal
-        data={items}
-        keyExtractor={(item) => String(item.id)}
-        renderItem={({ item }) => <FoodCard item={item} />}
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{
-          paddingHorizontal: 20,
-        }}
-      />
+      {loading && items.length === 0 ? (
+        <CardSkeletonRow width={250} height={300} radius={20} />
+      ) : (
+        <FlatList
+          horizontal
+          data={items}
+          keyExtractor={(item) => String(item.id)}
+          renderItem={({ item }) => <FoodCard item={item} />}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingHorizontal: 20,
+          }}
+        />
+      )}
     </>
   );
 }

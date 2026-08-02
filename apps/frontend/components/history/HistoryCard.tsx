@@ -1,4 +1,5 @@
 import { Image, StyleSheet, Text, View } from "react-native";
+import COLORS from "../../constants/colors";
 
 export default function HistoryCard({ item }: any) {
   return (
@@ -27,10 +28,12 @@ export default function HistoryCard({ item }: any) {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "white",
+    backgroundColor: COLORS.surface,
     borderRadius: 22,
     overflow: "hidden",
     marginBottom: 22,
+    borderWidth: 1,
+    borderColor: "rgba(255, 255, 255, 0.06)",
   },
 
   image: {
@@ -43,17 +46,22 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 24,
-    fontWeight: "700",
+    fontSize: 20,
+    fontWeight: "800",
+    color: COLORS.text,
   },
 
   year: {
-    color: "#007AFF",
+    color: COLORS.saffron,
     marginTop: 6,
+    fontWeight: "700",
+    fontSize: 12,
   },
 
   description: {
     marginTop: 10,
-    color: "#555",
+    color: COLORS.subtitle,
+    fontSize: 13,
+    lineHeight: 20,
   },
 });

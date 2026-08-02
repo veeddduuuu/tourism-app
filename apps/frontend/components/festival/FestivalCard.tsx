@@ -1,4 +1,5 @@
 import { View, Image, Text, StyleSheet } from "react-native";
+import COLORS from "../../constants/colors";
 
 export default function FestivalCard({ item }: any) {
   return (
@@ -16,9 +17,7 @@ export default function FestivalCard({ item }: any) {
           {item.month}
         </Text>
 
-        <Text style={styles.description}>
-          {item.description}
-        </Text>
+        <Text style={styles.description}>{item.description}</Text>
       </View>
     </View>
   );
@@ -26,10 +25,12 @@ export default function FestivalCard({ item }: any) {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "white",
+    backgroundColor: COLORS.surface,
     borderRadius: 22,
     marginBottom: 20,
     overflow: "hidden",
+    borderWidth: 1,
+    borderColor: "rgba(255, 255, 255, 0.06)",
   },
 
   image: {
@@ -42,22 +43,29 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 24,
-    fontWeight: "700",
+    fontSize: 22,
+    fontWeight: "800",
+    color: COLORS.text,
   },
 
   location: {
-    color: "#0A84FF",
+    color: COLORS.saffron,
     marginTop: 6,
+    fontWeight: "700",
+    fontSize: 12,
   },
 
   month: {
-    color: "#666",
-    marginTop: 6,
+    color: COLORS.subtitle,
+    marginTop: 4,
+    fontSize: 12,
+    fontWeight: "600",
   },
 
   description: {
     marginTop: 10,
-    color: "#555",
+    color: COLORS.subtitle,
+    fontSize: 13,
+    lineHeight: 20,
   },
 });

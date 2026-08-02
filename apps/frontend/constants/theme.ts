@@ -10,11 +10,13 @@ const THEME = {
   spacing: SPACING,
 
   radius: {
-    sm: 10,
+    sm: 12,
 
     md: 16,
 
     lg: 24,
+
+    card: 24,
 
     xl: 32,
 
@@ -27,14 +29,21 @@ const THEME = {
     shadowOffset: {
       width: 0,
 
-      height: 8,
+      height: 10,
     },
 
-    shadowOpacity: 0.2,
+    shadowOpacity: 0.35,
 
-    shadowRadius: 12,
+    shadowRadius: 18,
 
     elevation: 10,
+  },
+
+  glassCard: {
+    backgroundColor: COLORS.card,
+    borderRadius: 24,
+    borderWidth: 1,
+    borderColor: COLORS.glassBorder,
   },
 };
 

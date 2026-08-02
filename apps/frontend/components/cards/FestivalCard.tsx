@@ -4,6 +4,8 @@ import { LinearGradient } from "expo-linear-gradient";
 
 import PressableScale from "../common/PressableScale";
 
+import COLORS from "../../constants/colors";
+
 interface Props {
   item: any;
 }
@@ -17,7 +19,7 @@ export default function FestivalCard({ item }: Props) {
         imageStyle={{ borderRadius: 24 }}
       >
         <LinearGradient
-          colors={["rgba(0,0,0,0.1)", "rgba(0,0,0,0.65)"]}
+          colors={["rgba(11,19,38,0.2)", "rgba(11,19,38,0.85)"]}
           style={StyleSheet.absoluteFillObject}
         />
         <View style={styles.overlay}>
@@ -44,12 +46,14 @@ const styles = StyleSheet.create({
     height: 200,
     marginRight: 18,
     borderRadius: 24,
+    borderWidth: 1,
+    borderColor: COLORS.glassBorder,
     overflow: "hidden",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.35,
-    shadowRadius: 14,
-    elevation: 8,
+    shadowRadius: 16,
+    elevation: 10,
   },
 
   image: {
@@ -65,32 +69,34 @@ const styles = StyleSheet.create({
 
   badge: {
     alignSelf: "flex-start",
-    backgroundColor: "#FF6B35",
+    backgroundColor: COLORS.saffron,
     paddingHorizontal: 12,
     paddingVertical: 5,
     borderRadius: 20,
   },
 
   badgeText: {
-    color: "white",
-    fontWeight: "700",
+    color: "#0B1326",
+    fontWeight: "800",
+    fontSize: 12,
   },
 
   title: {
     color: "white",
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: "800",
   },
 
   state: {
-    color: "#E4E4E7",
-    marginTop: 5,
-    fontSize: 15,
+    color: COLORS.subtitle,
+    marginTop: 4,
+    fontSize: 14,
   },
 
   date: {
-    color: "white",
-    marginTop: 8,
+    color: COLORS.saffron,
+    marginTop: 6,
     fontWeight: "700",
+    fontSize: 13,
   },
 });

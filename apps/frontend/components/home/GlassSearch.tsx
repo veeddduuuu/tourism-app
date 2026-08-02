@@ -1,20 +1,21 @@
 import React from "react";
 import { StyleSheet, TextInput, View } from "react-native";
 import { Search, SlidersHorizontal } from "lucide-react-native";
+import COLORS from "../../constants/colors";
 
 export default function GlassSearch() {
   return (
     <View style={styles.container}>
-      <Search color="#A1A1AA" size={20} />
+      <Search color={COLORS.subtitle} size={20} />
 
       <TextInput
         placeholder="Search destinations, food, festivals..."
-        placeholderTextColor="#A1A1AA"
+        placeholderTextColor={COLORS.subtitle}
         style={styles.input}
       />
 
       <View style={styles.filter}>
-        <SlidersHorizontal color="white" size={18} />
+        <SlidersHorizontal color="#0B1326" size={18} />
       </View>
     </View>
   );
@@ -26,27 +27,32 @@ const styles = StyleSheet.create({
     marginTop: 20,
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "rgba(255,255,255,0.09)",
-    borderRadius: 18,
+    backgroundColor: "rgba(19, 31, 55, 0.75)",
+    borderRadius: 20,
     paddingLeft: 18,
     paddingRight: 8,
     height: 56,
     borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.14)",
+    borderColor: COLORS.glassBorder,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 10,
+    elevation: 4,
   },
 
   input: {
     marginLeft: 12,
     flex: 1,
     color: "white",
-    fontSize: 16,
+    fontSize: 15,
   },
 
   filter: {
-    width: 40,
-    height: 40,
-    borderRadius: 12,
-    backgroundColor: "#FF6B35",
+    width: 42,
+    height: 42,
+    borderRadius: 14,
+    backgroundColor: COLORS.saffron,
     justifyContent: "center",
     alignItems: "center",
   },

@@ -18,7 +18,7 @@ export default function FoodCard({ item }: Props) {
         <Image source={{ uri: item.image }} style={styles.image} />
 
         <LinearGradient
-          colors={["transparent", "rgba(0,0,0,0.35)"]}
+          colors={["transparent", "rgba(11,19,38,0.45)"]}
           style={StyleSheet.absoluteFillObject}
         />
 
@@ -29,10 +29,10 @@ export default function FoodCard({ item }: Props) {
 
       <View style={styles.content}>
         <View style={styles.ratingRow}>
-          <Text style={styles.title}>{item.title}</Text>
+          <Text style={styles.title} numberOfLines={1}>{item.title}</Text>
 
           <View style={styles.rating}>
-            <Star fill="#FFD43B" color="#FFD43B" size={14} />
+            <Star fill={COLORS.saffron} color={COLORS.saffron} size={14} />
 
             <Text style={styles.ratingText}>{item.rating}</Text>
           </View>
@@ -42,7 +42,7 @@ export default function FoodCard({ item }: Props) {
 
         <View style={styles.bottom}>
           <View style={styles.time}>
-            <Clock3 color={COLORS.primary} size={14} />
+            <Clock3 color={COLORS.saffron} size={14} />
 
             <Text style={styles.timeText}>{item.duration}</Text>
           </View>
@@ -60,26 +60,27 @@ const styles = StyleSheet.create({
   card: {
     width: 250,
     marginRight: 18,
-    backgroundColor: "#18181B",
-    borderRadius: 20,
+    backgroundColor: COLORS.card,
+    borderRadius: 24,
     borderWidth: 1,
-    borderColor: "#27272A",
+    borderColor: COLORS.glassBorder,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.3,
-    shadowRadius: 14,
-    elevation: 8,
+    shadowOpacity: 0.35,
+    shadowRadius: 16,
+    elevation: 10,
+    overflow: "hidden",
   },
 
   imageWrap: {
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
     overflow: "hidden",
   },
 
   image: {
     width: "100%",
-    height: 180,
+    height: 170,
   },
 
   heart: {
@@ -89,13 +90,15 @@ const styles = StyleSheet.create({
     width: 34,
     height: 34,
     borderRadius: 17,
-    backgroundColor: "rgba(0,0,0,0.35)",
+    backgroundColor: "rgba(11, 19, 38, 0.55)",
+    borderWidth: 1,
+    borderColor: "rgba(255, 255, 255, 0.15)",
     justifyContent: "center",
     alignItems: "center",
   },
 
   content: {
-    padding: 15,
+    padding: 16,
   },
 
   title: {
@@ -119,16 +122,19 @@ const styles = StyleSheet.create({
   ratingText: {
     color: "white",
     marginLeft: 5,
+    fontWeight: "700",
   },
 
   state: {
-    color: "#A1A1AA",
+    color: COLORS.subtitle,
     marginTop: 6,
+    fontSize: 13,
   },
 
   bottom: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
     marginTop: 15,
   },
 
@@ -140,18 +146,19 @@ const styles = StyleSheet.create({
   timeText: {
     color: "white",
     marginLeft: 5,
+    fontSize: 13,
   },
 
   badge: {
-    backgroundColor: COLORS.primary,
+    backgroundColor: COLORS.saffron,
     borderRadius: 12,
     paddingHorizontal: 12,
-    paddingVertical: 4,
+    paddingVertical: 5,
   },
 
   badgeText: {
-    color: "white",
-    fontWeight: "600",
-    fontSize: 12,
+    color: "#0B1326",
+    fontWeight: "800",
+    fontSize: 11,
   },
 });

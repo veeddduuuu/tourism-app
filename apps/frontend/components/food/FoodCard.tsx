@@ -1,4 +1,5 @@
 import { Image, StyleSheet, Text, View } from "react-native";
+import COLORS from "../../constants/colors";
 
 export default function FoodCard({ item }: any) {
   return (
@@ -39,10 +40,12 @@ export default function FoodCard({ item }: any) {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "white",
+    backgroundColor: COLORS.surface,
     borderRadius: 24,
     overflow: "hidden",
     marginBottom: 22,
+    borderWidth: 1,
+    borderColor: "rgba(255, 255, 255, 0.06)",
     elevation: 5,
   },
 
@@ -56,20 +59,24 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 22,
-    fontWeight: "700",
+    fontSize: 20,
+    fontWeight: "800",
+    color: COLORS.text,
   },
 
   category: {
-    color: "#0A84FF",
+    color: COLORS.saffron,
     marginTop: 4,
-    fontWeight: "600",
+    fontWeight: "700",
+    fontSize: 12,
+    textTransform: "uppercase",
   },
 
   description: {
     marginTop: 10,
-    color: "#666",
-    lineHeight: 22,
+    color: COLORS.subtitle,
+    fontSize: 13,
+    lineHeight: 20,
   },
 
   bottom: {
@@ -80,19 +87,21 @@ const styles = StyleSheet.create({
   },
 
   rating: {
-    fontWeight: "700",
-    fontSize: 16,
+    fontWeight: "800",
+    fontSize: 15,
+    color: COLORS.text,
   },
 
   badge: {
-    backgroundColor: "#EAF7FF",
-    paddingHorizontal: 14,
-    paddingVertical: 8,
+    backgroundColor: "rgba(255, 153, 51, 0.15)",
+    paddingHorizontal: 12,
+    paddingVertical: 6,
     borderRadius: 30,
   },
 
   badgeText: {
-    color: "#007AFF",
-    fontWeight: "600",
+    color: COLORS.saffron,
+    fontWeight: "700",
+    fontSize: 11,
   },
 });
