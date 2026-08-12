@@ -149,7 +149,7 @@ export default function ItineraryScreen() {
         <Text style={styles.errorSub}>
           {rateLimited
             ? "Please try again in a few minutes."
-            : error?.message ?? "Is the trip-planner-api running on :8080?"}
+            : error?.message ?? "Is the Aaroh backend running?"}
         </Text>
         <PressableScale style={[styles.primaryBtn, { backgroundColor: accent, marginTop: 24 }]} onPress={refetch}>
           <Text style={styles.primaryText}>Try Again</Text>
