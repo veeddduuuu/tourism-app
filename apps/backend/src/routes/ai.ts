@@ -7,97 +7,34 @@ import { aiTrips } from '../db/schema';
 import { aiLimiter } from '../middleware/rateLimit';
 import { optionalAuth } from '../middleware/auth';
 import { cacheGet, cacheSet } from '../db/redis';
-import {
-  generateTripPlan,
-  TripGenerationError,
-  TripParams,
-  generateStory,
-  StoryGenerationError,
-} from '../services/groq';
+import { generateStory, StoryGenerationError } from '../services/groq';
 import { parseQuery } from '../utils/parseQuery';
 
 const router = Router();
-
-const TRIP_CACHE_TTL = 86400; // 24 hours
-
-const tripSchema = z.object({
-  destination: z.string().min(1),
-  startCity: z.string().min(1),
-  duration: z.coerce.number().int().min(1).max(30),
-  budget: z.coerce.number().int().positive(),
-  travelStyle: z.string().min(1),
-  groupType: z.string().min(1),
-  month: z.string().min(1),
-  interests: z.array(z.string()).default([]),
-});
 
 const historyQuerySchema = z.object({
   page: z.coerce.number().min(1).default(1),
   limit: z.coerce.number().min(1).max(50).default(20),
 });
 
-// Pulls the Clerk user id when a session is present, otherwise null. The
-// optionalAuth middleware always sets `req.auth`, but `userId` is null for
-// anonymous callers.
 function getUserId(req: Request): string | null {
   return (req as WithAuthProp<Request>).auth?.userId ?? null;
 }
 
-// Builds a deterministic cache key from the request params so identical requests
-// hit the cache regardless of key ordering in the request body.
-function buildCacheKey(params: TripParams): string {
-  const canonical = {
-    destination: params.destination.trim().toLowerCase(),
-    startCity: params.startCity.trim().toLowerCase(),
-    duration: params.duration,
-    budget: params.budget,
-    travelStyle: params.travelStyle.trim().toLowerCase(),
-    groupType: params.groupType.trim().toLowerCase(),
-    month: params.month.trim().toLowerCase(),
-    interests: [...params.interests].map((i) => i.trim().toLowerCase()).sort(),
-  };
-  return `trip:${JSON.stringify(canonical)}`;
-}
-
-// POST /ai/trip/plan — generate (or serve cached) itinerary, persist to ai_trips
-router.post(
-  '/trip/plan',
-  aiLimiter,
-  optionalAuth,
-  async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const params = tripSchema.parse(req.body) as TripParams;
-      const cacheKey = buildCacheKey(params);
-
-      const cached = await cacheGet(cacheKey);
-      if (cached) {
-        res.json({ data: cached, cached: true });
-        return;
-      }
-
-      const itinerary = await generateTripPlan(params);
-
-      // Best-effort cache; failure here must not break the response.
-      await cacheSet(cacheKey, itinerary, TRIP_CACHE_TTL);
-
-      await db.insert(aiTrips).values({
-        userId: getUserId(req),
-        budget: params.budget,
-        duration: params.duration,
-        preferences: params,
-        generatedItinerary: itinerary,
-      });
-
-      res.json({ data: itinerary, cached: false });
-    } catch (err) {
-      if (err instanceof TripGenerationError) {
-        res.status(502).json({ error: 'Trip generation failed', detail: err.message });
-        return;
-      }
-      next(err);
-    }
-  }
-);
+/**
+ * Trip planning moved to the standalone multi-agent service
+ * (trip-planner-api). The Expo app calls it directly via
+ * EXPO_PUBLIC_TRIP_PLANNER_URL. This stub remains so old clients get a
+ * clear error instead of a silent 404.
+ */
+router.post('/trip/plan', (_req: Request, res: Response) => {
+  res.status(410).json({
+    error: 'Trip planner moved',
+    detail:
+      'Use the multi-agent trip-planner-api: POST /api/v1/trips/plan. ' +
+      'Configure EXPO_PUBLIC_TRIP_PLANNER_URL in the frontend.',
+  });
+});
 
 // GET /ai/trip/history — the caller's saved trips (empty for anonymous users)
 router.get(
