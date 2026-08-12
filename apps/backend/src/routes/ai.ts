@@ -9,6 +9,12 @@ import { optionalAuth } from '../middleware/auth';
 import { cacheGet, cacheSet } from '../db/redis';
 import { generateStory, StoryGenerationError } from '../services/groq';
 import { parseQuery } from '../utils/parseQuery';
+import {
+  planTrip,
+  tripPlanRequestSchema,
+  GroqRateLimited,
+  TripPlannerConfigError,
+} from '../tripPlanner';
 
 const router = Router();
 
@@ -21,20 +27,91 @@ function getUserId(req: Request): string | null {
   return (req as WithAuthProp<Request>).auth?.userId ?? null;
 }
 
-/**
- * Trip planning moved to the standalone multi-agent service
- * (trip-planner-api). The Expo app calls it directly via
- * EXPO_PUBLIC_TRIP_PLANNER_URL. This stub remains so old clients get a
- * clear error instead of a silent 404.
- */
-router.post('/trip/plan', (_req: Request, res: Response) => {
-  res.status(410).json({
-    error: 'Trip planner moved',
-    detail:
-      'Use the multi-agent trip-planner-api: POST /api/v1/trips/plan. ' +
-      'Configure EXPO_PUBLIC_TRIP_PLANNER_URL in the frontend.',
-  });
-});
+/** Serialize travel legs with both from/to and from_place/to_place for clients. */
+function serializePlan(plan: Awaited<ReturnType<typeof planTrip>>) {
+  return {
+    ...plan,
+    travel: {
+      ...plan.travel,
+      to_destination: plan.travel.to_destination.map((leg) => ({
+        mode: leg.mode,
+        from: leg.from_place,
+        to: leg.to_place,
+        from_place: leg.from_place,
+        to_place: leg.to_place,
+        duration_hours: leg.duration_hours,
+        estimated_cost: leg.estimated_cost,
+        notes: leg.notes,
+      })),
+    },
+  };
+}
+
+// POST /ai/trip/plan — multi-agent trip planner (weather∥travel∥safety → … → critic)
+router.post(
+  '/trip/plan',
+  aiLimiter,
+  optionalAuth,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const parsed = tripPlanRequestSchema.safeParse(req.body);
+      if (!parsed.success) {
+        res.status(400).json({
+          error: 'Invalid trip plan request',
+          detail: parsed.error.flatten(),
+        });
+        return;
+      }
+
+      const plan = await planTrip(parsed.data);
+      const payload = serializePlan(plan);
+
+      const userId = getUserId(req);
+      if (userId) {
+        try {
+          const start = new Date(parsed.data.start_date + 'T00:00:00Z');
+          const end = new Date(parsed.data.end_date + 'T00:00:00Z');
+          const duration = Math.max(
+            Math.round((end.getTime() - start.getTime()) / 86_400_000),
+            1
+          );
+          await db.insert(aiTrips).values({
+            userId,
+            budget: Math.round(parsed.data.budget.amount),
+            duration,
+            preferences: parsed.data,
+            generatedItinerary: payload,
+          });
+        } catch (saveErr) {
+          console.error('[ai/trip/plan] failed to persist trip:', saveErr);
+        }
+      }
+
+      res.json(payload);
+    } catch (err) {
+      if (err instanceof TripPlannerConfigError) {
+        res.status(503).json({ error: 'Trip planner unavailable', detail: err.message });
+        return;
+      }
+      if (err instanceof GroqRateLimited) {
+        const wait = Math.max(1, Math.ceil(err.retryAfterS ?? 60));
+        res.setHeader('Retry-After', String(wait));
+        res.status(429).json({
+          error: 'Groq rate limit',
+          detail:
+            `${err.message} Retry in ~${wait}s, or switch GROQ_MODEL to ` +
+            '`llama-3.1-8b-instant` (higher free-tier token budget) and restart.',
+        });
+        return;
+      }
+      console.error('[ai/trip/plan]', err);
+      res.status(502).json({
+        error: 'Trip planning failed',
+        detail: err instanceof Error ? err.message : String(err),
+      });
+    }
+  }
+);
 
 // GET /ai/trip/history — the caller's saved trips (empty for anonymous users)
 router.get(
