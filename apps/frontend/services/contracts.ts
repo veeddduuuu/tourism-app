@@ -224,7 +224,7 @@ export interface SearchQuery {
 }
 
 // ---------------------------------------------------------------------------
-// AI Trip planner — powered by standalone trip-planner-api
+// AI Trip planner — embedded multi-agent pipeline on Aaroh backend
 // ---------------------------------------------------------------------------
 
 /** Prefs collected in-app. Mapped 1:1 onto TripPlanRequest. */
@@ -271,6 +271,25 @@ export interface WeatherReport {
   daily: WeatherDay[];
   alerts: string[];
   packing_tips: string[];
+  source?: string;
+  resolved_place?: string;
+}
+
+export interface SafetyHeadline {
+  title: string;
+  source: string;
+  url: string;
+  published_at: string;
+}
+
+export interface SafetyReport {
+  summary: string;
+  risk_level: "low" | "moderate" | "high" | "unknown";
+  safe_to_visit: boolean;
+  concerns: string[];
+  recommendations: string[];
+  headlines: SafetyHeadline[];
+  sources_note: string;
 }
 
 export interface TravelLeg {
@@ -351,7 +370,7 @@ export interface Critique {
   revised_priorities: string[];
 }
 
-/** Full multi-agent response from POST /api/v1/trips/plan */
+/** Full multi-agent response from POST /ai/trip/plan */
 export interface TripPlan {
   trip_id: string;
   destination: string;
@@ -359,6 +378,7 @@ export interface TripPlan {
   end_date: string;
   summary: string;
   weather: WeatherReport;
+  safety: SafetyReport;
   travel: TravelPlan;
   hotels: HotelsPlan;
   itinerary: ItineraryPlan;

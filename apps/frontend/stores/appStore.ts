@@ -16,7 +16,7 @@ export interface Guide {
   tips: string[];
 }
 
-/** Prefs aligned with trip-planner-api TripPlanRequest. */
+/** Prefs aligned with Aaroh POST /ai/trip/plan request. */
 export interface TripPrefs {
   destination: string;
   origin: string;
