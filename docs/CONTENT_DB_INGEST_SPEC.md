@@ -1,6 +1,5 @@
 # Aaroh Content Database — Spec
 
-**Audience:** Implementer building the production content layer for Aaroh (India cultural tourism app).  
 **Out of scope:** RAG, embeddings, vector DBs, scraping social sites, paid Places APIs as the primary source.
 
 ---
@@ -94,7 +93,7 @@ Respect rate limits and API etiquette (especially Wikipedia). Cache or backoff a
 
 ## Design expectations (leave room to invent)
 
-Implementers should figure out folder layout, script entrypoints, and exact SPARQL/filters themselves. The following are expectations, not a mandated file tree:
+Folder layout, script entrypoints, and exact SPARQL/filters are left open. The following are expectations, not a mandated file tree:
 
 - Curated packs live as versioned data files in the backend (cities, foods, festivals, history).
 - Ingest code is modular (clients for Wikidata/Wikipedia/MealDB, shared upsert helpers, rate limiting).
