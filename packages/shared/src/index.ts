@@ -3,8 +3,7 @@ export interface HealthResponse {
   ts: string;
 }
 
-// Trip planning lives in trip-planner-api; Aaroh frontend calls it directly.
-// These types mirror that service for shared consumers.
+// Trip planning is embedded in the Aaroh Express backend (multi-agent pipeline).
 
 export interface TripParams {
   destination: string;
@@ -27,6 +26,7 @@ export interface TripPlan {
   end_date: string;
   summary: string;
   weather: unknown;
+  safety: unknown;
   travel: unknown;
   hotels: unknown;
   itinerary: unknown;
