@@ -224,49 +224,156 @@ export interface SearchQuery {
 }
 
 // ---------------------------------------------------------------------------
-// AI Trip planner
+// AI Trip planner — powered by standalone trip-planner-api
 // ---------------------------------------------------------------------------
 
+/** Prefs collected in-app. Mapped 1:1 onto TripPlanRequest. */
 export interface TripParams {
   destination: string;
-  startCity: string;
-  duration: number;
+  origin: string;
+  startDate: string;
+  endDate: string;
   budget: number;
-  travelStyle: string;
-  groupType: string;
-  month: string;
+  currency: string;
+  travelers: number;
+  pace: "relaxed" | "moderate" | "packed";
   interests: string[];
+  stayType: "hostel" | "budget" | "boutique" | "luxury" | "apartment" | null;
+  transportMode: "any" | "flight" | "train" | "car" | "mixed";
 }
 
-export interface TripDay {
-  day: number;
-  title: string;
-  city: string;
-  activities: string[];
-  estimated_cost_inr: number;
-  hotel: { name: string; type: string; price_per_night: number };
-  transport: { from: string; to: string; mode: string; cost: number };
-}
-
-export interface TripItinerary {
-  title: string;
-  total_cost_inr: number;
-  budget_breakdown: {
-    accommodation_pct: number;
-    transport_pct: number;
-    food_pct: number;
-    activities_pct: number;
+export interface TripPlanRequest {
+  destination: string;
+  origin?: string | null;
+  start_date: string;
+  end_date: string;
+  budget: { amount: number; currency: string };
+  travelers?: number;
+  preferences?: {
+    pace?: "relaxed" | "moderate" | "packed";
+    interests?: string[];
+    stay_type?: "hostel" | "budget" | "boutique" | "luxury" | "apartment" | null;
+    transport_mode?: "any" | "flight" | "train" | "car" | "mixed";
   };
-  days: TripDay[];
-  cultural_notes: string[];
-  best_time_to_visit: string;
-  weather_warning: string | null;
 }
 
-export interface TripPlanResponse {
-  data: TripItinerary;
-  cached: boolean;
+export interface WeatherDay {
+  date: string;
+  condition: string;
+  high_c: number;
+  low_c: number;
+  precipitation_chance: number;
+  notes: string;
 }
+
+export interface WeatherReport {
+  summary: string;
+  daily: WeatherDay[];
+  alerts: string[];
+  packing_tips: string[];
+}
+
+export interface TravelLeg {
+  mode: string;
+  from?: string;
+  to?: string;
+  from_place?: string;
+  to_place?: string;
+  duration_hours: number;
+  estimated_cost: number;
+  notes: string;
+}
+
+export interface TravelPlan {
+  summary: string;
+  to_destination: TravelLeg[];
+  local_transport: string[];
+  tips: string[];
+}
+
+export interface HotelOption {
+  name: string;
+  area: string;
+  type: string;
+  nights: number;
+  price_per_night: number;
+  total_estimate: number;
+  why: string;
+  pros: string[];
+  cons: string[];
+}
+
+export interface HotelsPlan {
+  summary: string;
+  recommendations: HotelOption[];
+}
+
+export interface ItineraryDay {
+  date: string;
+  theme: string;
+  morning: string;
+  afternoon: string;
+  evening: string;
+  meals: string[];
+  estimated_cost: number;
+  weather_note: string;
+}
+
+export interface ItineraryPlan {
+  summary: string;
+  days: ItineraryDay[];
+}
+
+export interface BudgetBreakdown {
+  travel: number;
+  lodging: number;
+  food: number;
+  activities: number;
+  misc: number;
+  total: number;
+  currency: string;
+  within_budget: boolean;
+  variance: number;
+  suggestions: string[];
+}
+
+export interface CritiqueIssue {
+  severity: "low" | "medium" | "high";
+  area: string;
+  message: string;
+  suggestion: string;
+}
+
+export interface Critique {
+  overall_score: number;
+  strengths: string[];
+  issues: CritiqueIssue[];
+  revised_priorities: string[];
+}
+
+/** Full multi-agent response from POST /api/v1/trips/plan */
+export interface TripPlan {
+  trip_id: string;
+  destination: string;
+  start_date: string;
+  end_date: string;
+  summary: string;
+  weather: WeatherReport;
+  travel: TravelPlan;
+  hotels: HotelsPlan;
+  itinerary: ItineraryPlan;
+  budget: BudgetBreakdown;
+  critique: Critique;
+  meta: {
+    model: string;
+    agents: string[];
+    generated_at: string;
+  };
+}
+
+/** @deprecated Old Aaroh backend shape — use TripPlan */
+export type TripItinerary = TripPlan;
+export type TripPlanResponse = TripPlan;
 
 // ---------------------------------------------------------------------------
 // AI Story (GET /ai/story)

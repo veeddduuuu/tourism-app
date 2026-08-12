@@ -16,9 +16,19 @@ export interface Guide {
   tips: string[];
 }
 
+/** Prefs aligned with trip-planner-api TripPlanRequest. */
 export interface TripPrefs {
-  purpose: string;
+  destination: string;
+  origin: string;
+  startDate: string; // YYYY-MM-DD
+  endDate: string; // YYYY-MM-DD
+  budget: number;
+  currency: string;
+  travelers: number;
+  pace: "relaxed" | "moderate" | "packed";
   interests: string[];
+  stayType: "hostel" | "budget" | "boutique" | "luxury" | "apartment" | null;
+  transportMode: "any" | "flight" | "train" | "car" | "mixed";
 }
 
 export interface AppState {
