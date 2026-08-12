@@ -3,47 +3,43 @@ export interface HealthResponse {
   ts: string;
 }
 
-// --- Trip planner contracts (POST /api/ai/trip/plan) ---
+// Trip planning lives in trip-planner-api; Aaroh frontend calls it directly.
+// These types mirror that service for shared consumers.
 
 export interface TripParams {
   destination: string;
-  startCity: string;
-  duration: number;
+  origin: string;
+  startDate: string;
+  endDate: string;
   budget: number;
-  travelStyle: string;
-  groupType: string;
-  month: string;
+  currency: string;
+  travelers: number;
+  pace: "relaxed" | "moderate" | "packed";
   interests: string[];
+  stayType: "hostel" | "budget" | "boutique" | "luxury" | "apartment" | null;
+  transportMode: "any" | "flight" | "train" | "car" | "mixed";
 }
 
-export interface TripDay {
-  day: number;
-  title: string;
-  city: string;
-  activities: string[];
-  estimated_cost_inr: number;
-  hotel: { name: string; type: string; price_per_night: number };
-  transport: { from: string; to: string; mode: string; cost: number };
-}
-
-export interface TripItinerary {
-  title: string;
-  total_cost_inr: number;
-  budget_breakdown: {
-    accommodation_pct: number;
-    transport_pct: number;
-    food_pct: number;
-    activities_pct: number;
+export interface TripPlan {
+  trip_id: string;
+  destination: string;
+  start_date: string;
+  end_date: string;
+  summary: string;
+  weather: unknown;
+  travel: unknown;
+  hotels: unknown;
+  itinerary: unknown;
+  budget: unknown;
+  critique: unknown;
+  meta: {
+    model: string;
+    agents: string[];
+    generated_at: string;
   };
-  days: TripDay[];
-  cultural_notes: string[];
-  best_time_to_visit: string;
-  weather_warning: string | null;
 }
 
-export interface TripPlanResponse {
-  data: TripItinerary;
-  cached: boolean;
-}
+export type TripItinerary = TripPlan;
+export type TripPlanResponse = TripPlan;
 
 // Add shared API contracts and types here
