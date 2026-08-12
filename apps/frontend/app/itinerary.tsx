@@ -16,53 +16,106 @@ import { planTrip, type TripParams } from "../services/endpoints";
 import { useApiQuery } from "../hooks/useApiQuery";
 import { useAppStore } from "../stores/appStore";
 
-const MONTHS = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December",
-];
+function money(amount: number, currency = "INR") {
+  if (currency.toUpperCase() === "INR") {
+    return `₹${Math.round(amount).toLocaleString("en-IN")}`;
+  }
+  try {
+    return new Intl.NumberFormat("en", {
+      style: "currency",
+      currency: currency.toUpperCase(),
+      maximumFractionDigits: 0,
+    }).format(amount);
+  } catch {
+    return `${currency} ${Math.round(amount).toLocaleString()}`;
+  }
+}
 
-const GROUP_BY_PURPOSE: Record<string, string> = {
-  family: "family",
-  honeymoon: "couple",
-  business: "solo",
-};
-
-const inr = (n: number) => `₹${Math.round(n).toLocaleString("en-IN")}`;
+function budgetBars(budget: {
+  travel: number;
+  lodging: number;
+  food: number;
+  activities: number;
+  misc: number;
+  total: number;
+}) {
+  const total = budget.total || 1;
+  const pct = (n: number) => Math.max(0, Math.min(100, Math.round((n / total) * 100)));
+  return [
+    { label: "Stay", pct: pct(budget.lodging), color: "#FF6B35" },
+    { label: "Transport", pct: pct(budget.travel), color: "#22C55E" },
+    { label: "Food", pct: pct(budget.food), color: "#FFB703" },
+    { label: "Activities", pct: pct(budget.activities), color: "#2563EB" },
+    { label: "Misc", pct: pct(budget.misc), color: "#A78BFA" },
+  ];
+}
 
 export default function ItineraryScreen() {
   const guide = useAppStore((s: any) => s.guide);
   const destination = useAppStore((s: any) => s.destinationState) as string | null;
-  const prefs = useAppStore((s: any) => s.tripPrefs) as
-    | { purpose: string; interests: string[] }
-    | null;
+  const prefs = useAppStore((s: any) => s.tripPrefs);
 
   const accent = guide?.color ?? "#FF6B35";
   const state = destination ?? "India";
+  const planDestination = prefs?.destination ?? state;
 
-  // Build the trip request. Budget/duration/start-city/month/group aren't asked
-  // in the questionnaire, so we send sensible defaults — the AI plans around them.
   const params: TripParams = useMemo(
-    () => ({
-      destination: state,
-      startCity: state === "Delhi" ? "Mumbai" : "Delhi",
-      duration: 4,
-      budget: 40000,
-      travelStyle: prefs?.purpose ?? "leisure",
-      groupType: prefs ? GROUP_BY_PURPOSE[prefs.purpose] ?? "couple" : "couple",
-      month: MONTHS[new Date().getMonth()],
-      interests: prefs?.interests ?? [],
-    }),
-    [state, prefs?.purpose, (prefs?.interests ?? []).join(",")]
+    () => {
+      const today = new Date();
+      const pad = (n: number) => String(n).padStart(2, "0");
+      const iso = (d: Date) =>
+        `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+      const start = new Date(today);
+      start.setDate(start.getDate() + 7);
+      const end = new Date(start);
+      end.setDate(end.getDate() + 3);
+
+      return {
+        destination: planDestination,
+        origin: prefs?.origin ?? "Delhi",
+        startDate: prefs?.startDate ?? iso(start),
+        endDate: prefs?.endDate ?? iso(end),
+        budget: prefs?.budget ?? 40000,
+        currency: prefs?.currency ?? "INR",
+        travelers: prefs?.travelers ?? 2,
+        pace: prefs?.pace ?? "moderate",
+        interests: prefs?.interests ?? [],
+        stayType: prefs?.stayType ?? "budget",
+        transportMode: prefs?.transportMode ?? "any",
+      };
+    },
+    [
+      planDestination,
+      prefs?.origin,
+      prefs?.startDate,
+      prefs?.endDate,
+      prefs?.budget,
+      prefs?.currency,
+      prefs?.travelers,
+      prefs?.pace,
+      prefs?.stayType,
+      prefs?.transportMode,
+      (prefs?.interests ?? []).join(","),
+    ]
   );
 
-  const { data, loading, error, refetch } = useApiQuery(
+  const { data: plan, loading, error, refetch } = useApiQuery(
     (signal) => planTrip(params, signal),
-    [params.destination, params.travelStyle, params.interests.join(",")]
+    [
+      params.destination,
+      params.origin,
+      params.startDate,
+      params.endDate,
+      params.budget,
+      params.currency,
+      params.travelers,
+      params.pace,
+      params.stayType,
+      params.transportMode,
+      params.interests.join(","),
+    ]
   );
 
-  const itinerary = data?.data ?? null;
-
-  // ---- Loading ----
   if (loading) {
     return (
       <LinearGradient colors={["#04122A", "#0A2E5C", "#123E78"]} style={styles.center}>
@@ -77,14 +130,15 @@ export default function ItineraryScreen() {
           />
         </View>
         <ActivityIndicator color={accent} size="large" style={{ marginTop: 24 }} />
-        <Text style={styles.loadingText}>Crafting your perfect trip to {state}…</Text>
-        <Text style={styles.loadingSub}>The AI is planning your days ✨</Text>
+        <Text style={styles.loadingText}>Crafting your perfect trip to {planDestination}…</Text>
+        <Text style={styles.loadingSub}>
+          Multi-agent planner: weather → travel → hotels → itinerary → budget → critic
+        </Text>
       </LinearGradient>
     );
   }
 
-  // ---- Error ----
-  if (error || !itinerary) {
+  if (error || !plan) {
     const rateLimited = error?.status === 429;
     return (
       <LinearGradient colors={["#04122A", "#0A2E5C", "#123E78"]} style={styles.center}>
@@ -94,8 +148,8 @@ export default function ItineraryScreen() {
         </Text>
         <Text style={styles.errorSub}>
           {rateLimited
-            ? "The AI planner allows a limited number of requests per hour. Please try again in a few minutes."
-            : error?.message ?? "Please try again."}
+            ? "Please try again in a few minutes."
+            : error?.message ?? "Is the trip-planner-api running on :8080?"}
         </Text>
         <PressableScale style={[styles.primaryBtn, { backgroundColor: accent, marginTop: 24 }]} onPress={refetch}>
           <Text style={styles.primaryText}>Try Again</Text>
@@ -107,42 +161,62 @@ export default function ItineraryScreen() {
     );
   }
 
-  const bb = itinerary.budget_breakdown;
-  const bars = [
-    { label: "Stay", pct: bb.accommodation_pct, color: "#FF6B35" },
-    { label: "Transport", pct: bb.transport_pct, color: "#22C55E" },
-    { label: "Food", pct: bb.food_pct, color: "#FFB703" },
-    { label: "Activities", pct: bb.activities_pct, color: "#2563EB" },
-  ];
+  const bars = budgetBars(plan.budget);
+  const currency = plan.budget.currency || "INR";
+  const hotel = plan.hotels.recommendations[0];
+  const weatherWarn =
+    plan.weather.alerts?.[0] ??
+    (plan.critique.issues.find((i) => i.area.toLowerCase().includes("weather"))?.message ||
+      null);
 
   return (
     <LinearGradient colors={["#04122A", "#0A2E5C", "#123E78"]} style={styles.fill}>
       <SafeAreaView style={styles.fill} edges={["top"]}>
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
           <Text style={styles.kicker}>YOUR AI ITINERARY</Text>
-          <Text style={styles.title}>{itinerary.title}</Text>
+          <Text style={styles.title}>{plan.destination}</Text>
+          <Text style={styles.summary}>{plan.summary}</Text>
 
           <View style={styles.metaRow}>
             <View style={[styles.chip, { backgroundColor: accent }]}>
-              <Text style={styles.chipText}>📍 {state}</Text>
+              <Text style={styles.chipText}>📍 {plan.destination}</Text>
             </View>
             <View style={styles.chip}>
-              <Text style={styles.chipText}>💰 {inr(itinerary.total_cost_inr)}</Text>
+              <Text style={styles.chipText}>💰 {money(plan.budget.total, currency)}</Text>
             </View>
             <View style={styles.chip}>
-              <Text style={styles.chipText}>🗓️ {itinerary.days.length} days</Text>
+              <Text style={styles.chipText}>🗓️ {plan.itinerary.days.length} days</Text>
+            </View>
+            <View style={styles.chip}>
+              <Text style={styles.chipText}>⭐ {plan.critique.overall_score}/10</Text>
             </View>
           </View>
 
-          {itinerary.weather_warning ? (
+          {weatherWarn ? (
             <View style={styles.warning}>
-              <Text style={styles.warningText}>⚠️ {itinerary.weather_warning}</Text>
+              <Text style={styles.warningText}>⚠️ {weatherWarn}</Text>
             </View>
           ) : null}
 
-          {/* Budget breakdown */}
+          <View style={styles.card}>
+            <Text style={styles.cardTitle}>Weather</Text>
+            <Text style={styles.body}>{plan.weather.summary}</Text>
+            {plan.weather.packing_tips?.slice(0, 3).map((t, i) => (
+              <Text key={i} style={styles.activity}>
+                •  {t}
+              </Text>
+            ))}
+          </View>
+
           <View style={styles.card}>
             <Text style={styles.cardTitle}>Budget breakdown</Text>
+            {!plan.budget.within_budget ? (
+              <Text style={styles.overBudget}>
+                Over budget by {money(Math.abs(plan.budget.variance), currency)}
+              </Text>
+            ) : (
+              <Text style={styles.underBudget}>Within budget ✓</Text>
+            )}
             {bars.map((b) => (
               <View key={b.label} style={styles.barRow}>
                 <Text style={styles.barLabel}>{b.label}</Text>
@@ -152,55 +226,87 @@ export default function ItineraryScreen() {
                 <Text style={styles.barPct}>{b.pct}%</Text>
               </View>
             ))}
+            {plan.budget.suggestions?.slice(0, 3).map((s, i) => (
+              <Text key={i} style={styles.note}>
+                •  {s}
+              </Text>
+            ))}
           </View>
 
-          {/* Days */}
-          {itinerary.days.map((day) => (
-            <View key={day.day} style={styles.card}>
-              <View style={styles.dayHeader}>
-                <View style={[styles.dayBadge, { backgroundColor: accent }]}>
-                  <Text style={styles.dayBadgeText}>Day {day.day}</Text>
-                </View>
-                <Text style={styles.dayCost}>{inr(day.estimated_cost_inr)}</Text>
-              </View>
-
-              <Text style={styles.dayTitle}>{day.title}</Text>
-              <Text style={styles.dayCity}>📍 {day.city}</Text>
-
-              {day.activities.map((a, i) => (
-                <Text key={i} style={styles.activity}>
-                  •  {a}
-                </Text>
-              ))}
-
-              <View style={styles.detailRow}>
-                <Text style={styles.detail}>🏨 {day.hotel.name}</Text>
-                <Text style={styles.detailSub}>{inr(day.hotel.price_per_night)}/night</Text>
-              </View>
+          {hotel ? (
+            <View style={styles.card}>
+              <Text style={styles.cardTitle}>Suggested stay</Text>
+              <Text style={styles.dayTitle}>{hotel.name}</Text>
+              <Text style={styles.dayCity}>
+                📍 {hotel.area} · {hotel.type}
+              </Text>
+              <Text style={styles.body}>{hotel.why}</Text>
               <View style={styles.detailRow}>
                 <Text style={styles.detail}>
-                  🚗 {day.transport.from} → {day.transport.to} ({day.transport.mode})
+                  {money(hotel.price_per_night, currency)}/night · {hotel.nights} nights
                 </Text>
-                <Text style={styles.detailSub}>{inr(day.transport.cost)}</Text>
+                <Text style={styles.detailSub}>{money(hotel.total_estimate, currency)}</Text>
               </View>
-            </View>
-          ))}
-
-          {/* Cultural notes */}
-          {itinerary.cultural_notes?.length ? (
-            <View style={styles.card}>
-              <Text style={styles.cardTitle}>Good to know</Text>
-              {itinerary.cultural_notes.map((n, i) => (
-                <Text key={i} style={styles.note}>
-                  •  {n}
-                </Text>
-              ))}
             </View>
           ) : null}
 
           <View style={styles.card}>
-            <Text style={styles.cardTitle}>Best time to visit</Text>
-            <Text style={styles.bestTime}>{itinerary.best_time_to_visit}</Text>
+            <Text style={styles.cardTitle}>Getting there</Text>
+            <Text style={styles.body}>{plan.travel.summary}</Text>
+            {plan.travel.to_destination?.slice(0, 2).map((leg, i) => {
+              const from = leg.from ?? leg.from_place ?? "?";
+              const to = leg.to ?? leg.to_place ?? "?";
+              return (
+                <View key={i} style={styles.detailRow}>
+                  <Text style={styles.detail}>
+                    🚗 {from} → {to} ({leg.mode})
+                  </Text>
+                  <Text style={styles.detailSub}>{money(leg.estimated_cost, currency)}</Text>
+                </View>
+              );
+            })}
+          </View>
+
+          {plan.itinerary.days.map((day, idx) => (
+            <View key={day.date + idx} style={styles.card}>
+              <View style={styles.dayHeader}>
+                <View style={[styles.dayBadge, { backgroundColor: accent }]}>
+                  <Text style={styles.dayBadgeText}>Day {idx + 1}</Text>
+                </View>
+                <Text style={styles.dayCost}>{money(day.estimated_cost, currency)}</Text>
+              </View>
+
+              <Text style={styles.dayTitle}>{day.theme}</Text>
+              <Text style={styles.dayCity}>📅 {day.date}</Text>
+              {day.weather_note ? (
+                <Text style={styles.weatherNote}>🌤 {day.weather_note}</Text>
+              ) : null}
+
+              <Text style={styles.slotLabel}>Morning</Text>
+              <Text style={styles.activity}>{day.morning}</Text>
+              <Text style={styles.slotLabel}>Afternoon</Text>
+              <Text style={styles.activity}>{day.afternoon}</Text>
+              <Text style={styles.slotLabel}>Evening</Text>
+              <Text style={styles.activity}>{day.evening}</Text>
+
+              {day.meals?.length ? (
+                <Text style={styles.detail}>🍽 {day.meals.join(" · ")}</Text>
+              ) : null}
+            </View>
+          ))}
+
+          <View style={styles.card}>
+            <Text style={styles.cardTitle}>Critic notes ({plan.critique.overall_score}/10)</Text>
+            {plan.critique.strengths?.slice(0, 3).map((s, i) => (
+              <Text key={`s${i}`} style={styles.note}>
+                ✓  {s}
+              </Text>
+            ))}
+            {plan.critique.issues?.slice(0, 4).map((issue, i) => (
+              <Text key={`i${i}`} style={styles.note}>
+                •  [{issue.severity}] {issue.message}
+              </Text>
+            ))}
           </View>
 
           <PressableScale
@@ -231,7 +337,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   loadingText: { color: "white", fontSize: 18, fontWeight: "700", marginTop: 22, textAlign: "center" },
-  loadingSub: { color: "#9EC3EC", fontSize: 14, marginTop: 8 },
+  loadingSub: { color: "#9EC3EC", fontSize: 13, marginTop: 8, textAlign: "center", paddingHorizontal: 12 },
 
   errorEmoji: { fontSize: 44 },
   errorText: { color: "white", fontSize: 19, fontWeight: "700", marginTop: 14, textAlign: "center" },
@@ -241,6 +347,7 @@ const styles = StyleSheet.create({
 
   kicker: { color: "#7FB0E8", fontSize: 12, fontWeight: "800", letterSpacing: 2, marginTop: 6 },
   title: { color: "white", fontSize: 28, fontWeight: "800", marginTop: 6 },
+  summary: { color: "#C9DCF2", fontSize: 14, lineHeight: 21, marginTop: 8 },
 
   metaRow: { flexDirection: "row", flexWrap: "wrap", gap: 8, marginTop: 14 },
   chip: {
@@ -270,6 +377,9 @@ const styles = StyleSheet.create({
     borderColor: "rgba(255,255,255,0.10)",
   },
   cardTitle: { color: "white", fontSize: 16, fontWeight: "800", marginBottom: 12 },
+  body: { color: "#EAF3FF", fontSize: 14, lineHeight: 21, marginBottom: 8 },
+  overBudget: { color: "#FCA5A5", fontSize: 13, fontWeight: "700", marginBottom: 10 },
+  underBudget: { color: "#86EFAC", fontSize: 13, fontWeight: "700", marginBottom: 10 },
 
   barRow: { flexDirection: "row", alignItems: "center", marginBottom: 10 },
   barLabel: { color: "#C9DCF2", width: 78, fontSize: 13 },
@@ -283,6 +393,8 @@ const styles = StyleSheet.create({
   dayCost: { color: "#9EC3EC", fontWeight: "700" },
   dayTitle: { color: "white", fontSize: 19, fontWeight: "800", marginTop: 12 },
   dayCity: { color: "#8FB6E6", marginTop: 4, marginBottom: 10 },
+  weatherNote: { color: "#FDE68A", fontSize: 13, marginBottom: 8 },
+  slotLabel: { color: "#7FB0E8", fontSize: 12, fontWeight: "800", marginTop: 8, letterSpacing: 0.5 },
   activity: { color: "#EAF3FF", fontSize: 15, lineHeight: 24 },
 
   detailRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginTop: 12 },
@@ -290,7 +402,6 @@ const styles = StyleSheet.create({
   detailSub: { color: "#9EC3EC", fontSize: 12, fontWeight: "600" },
 
   note: { color: "#EAF3FF", fontSize: 14, lineHeight: 23 },
-  bestTime: { color: "#EAF3FF", fontSize: 15 },
 
   primaryBtn: {
     marginTop: 26,
