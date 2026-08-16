@@ -5,22 +5,40 @@ import {
   cities,
   places,
   traditionalFoods,
+  recipes,
   festivals,
   historyEntries,
+  hotels,
 } from './schema';
 
 /**
- * Seeds the database with the starter content the frontend used to hard-code.
- * Idempotent-ish: clears the tables it owns first, then re-inserts. Run with:
- *   npx ts-node src/db/seed.ts   (from apps/backend)
+ * Demo fixture only — wipe-and-insert a tiny catalog for empty local bootstraps.
+ * Production / real catalog: `npm run ingest` (see docs/CONTENT_INGEST.md).
+ *
+ * This script DELETES states/cities/places/foods/festivals/history. Refusing to
+ * run without an explicit wipe flag keeps ingested data safe.
+ *
+ *   npm run db:seed -- --wipe
+ *   SEED_WIPE=1 npx ts-node --transpile-only src/db/seed.ts
  */
 async function seed() {
-  console.log('Clearing existing rows...');
+  const wipe = process.argv.includes('--wipe') || process.env.SEED_WIPE === '1';
+  if (!wipe) {
+    console.error(
+      'Demo seed wipes catalog tables. Re-run with --wipe (or SEED_WIPE=1).\n' +
+        'For the real catalog use: npm run ingest   (docs/CONTENT_INGEST.md)'
+    );
+    process.exit(1);
+  }
+
+  console.log('Clearing existing rows (demo seed wipe)...');
   // Delete in FK-dependency order (children first).
   await db.delete(historyEntries);
+  await db.delete(recipes);
   await db.delete(places);
   await db.delete(traditionalFoods);
   await db.delete(festivals);
+  await db.delete(hotels);
   await db.delete(cities);
   await db.delete(states);
 

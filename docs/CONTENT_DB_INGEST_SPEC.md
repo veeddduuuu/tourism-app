@@ -134,3 +134,5 @@ Treat these as the bar for “done” for this spec:
 ## Reference
 
 Broader product/implementation context: `docs/AAROH_Implementation_Plan_Phase1-3.md` (stack choices, example Wikidata/MealDB sketches, milestone “500+ places”). This spec overrides the hand-seed mindset; examples in that plan are starting points, not copy-paste mandates.
+
+How to run the implemented ingest: `docs/CONTENT_INGEST.md`.

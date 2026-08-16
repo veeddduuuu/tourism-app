@@ -19,11 +19,13 @@ Optional: Bhashini (translation/ASR), Clerk (auth / trip history), NewsAPI (safe
 aaroh/
 ├── apps/
 │   ├── backend/                 # Express API (:3000)
+│   │   ├── content/             # Curated JSON packs (cities, foods, …)
 │   │   └── src/
 │   │       ├── routes/          # HTTP routers under /api/*
 │   │       ├── tripPlanner/     # Multi-agent trip planner (Groq + tools)
 │   │       ├── services/        # Groq stories, Bhashini, translation
-│   │       ├── db/              # Drizzle schema, Redis, seed
+│   │       ├── db/              # Drizzle schema, Redis, demo seed
+│   │       ├── ingest/          # Idempotent catalog ingest CLI
 │   │       └── middleware/      # Auth, rate limit, errors
 │   └── frontend/                # Expo Router app (React Native)
 │       ├── app/                 # Screens (file-based routes)
@@ -101,8 +103,13 @@ From `apps/backend`:
 ```bash
 cd apps/backend
 npm run db:push      # apply Drizzle schema
-# optional: seed / studio
+# optional: demo seed (WIPES catalog tables) / Drizzle studio
+# npm run db:seed -- --wipe
 npm run db:studio
+
+# catalog ingest (idempotent; not the demo seed)
+npm run ingest:dry
+npm run ingest
 ```
 
 ### 3. Redis
@@ -154,11 +161,14 @@ docker compose up --build
 | `npm run lint` | root | Lint workspaces |
 | `npm run dev` | `apps/backend` | `ts-node-dev` API |
 | `npm run db:push` | `apps/backend` | Push schema to Postgres |
+| `npm run ingest` / `ingest:dry` | `apps/backend` | Catalog ingest (Wikidata/Wikipedia + JSON packs) |
+| `npm run db:seed -- --wipe` | `apps/backend` | Demo fixture only (deletes catalog tables) |
 | `npm start` | `apps/frontend` | Expo start |
 
 ## Docs
 
 - [Content DB ingest spec](docs/CONTENT_DB_INGEST_SPEC.md) — catalog / ingest expectations
+- [Catalog ingest ops](docs/CONTENT_INGEST.md) — how to run ingest (jobs, dry-run, env)
 - [AI feature specs](docs/ai-feature-specs/README.md) — product sheets for AI capabilities
 - [Contributing](CONTRIBUTING.md) — branch, commit, and PR conventions
 

@@ -17,6 +17,7 @@ Thanks for helping build Aaroh. This guide covers how to work in the monorepo, w
 | Trip planner | `apps/backend/src/tripPlanner/` | Agents, tools, orchestrator — keep route thin |
 | LLM / Bhashini helpers | `apps/backend/src/services/` | Shared non-route services |
 | DB schema | `apps/backend/src/db/schema.ts` | Drizzle; run `db:push` / `db:generate` as needed |
+| Catalog ingest | `apps/backend/src/ingest/` + `content/` | Idempotent upserts; see `docs/CONTENT_INGEST.md` |
 | App screens | `apps/frontend/app/` | Expo Router file-based routes |
 | API client | `apps/frontend/services/` | `http.ts` + `endpoints/*` + `contracts.ts` |
 | Shared types | `packages/shared/` | Only truly cross-cutting contracts |
@@ -42,6 +43,7 @@ cd apps/frontend && npm start
 - Health check: `GET http://localhost:3000/health`
 - Trip plan: `POST http://localhost:3000/api/ai/trip/plan` (see frontend `services/endpoints/trip.ts` for body shape)
 - Schema changes: `cd apps/backend && npm run db:push` (and generate migrations when you introduce them)
+- Catalog: `cd apps/backend && npm run ingest:dry` then `npm run ingest` (never confuse with `db:seed -- --wipe`)
 
 If the app runs on a phone, set `EXPO_PUBLIC_API_URL` to your LAN IP (or `10.0.2.2` for Android emulator).
 
@@ -93,7 +95,7 @@ EOF
 ## Docs contributions
 
 - AI product ideas → `docs/ai-feature-specs/` (follow the README sheet structure there)
-- Content/catalog ingest → `docs/CONTENT_DB_INGEST_SPEC.md`
+- Content/catalog ingest → `docs/CONTENT_DB_INGEST_SPEC.md` (behaviour) and `docs/CONTENT_INGEST.md` (how to run)
 - How to run / map of the repo → update root `README.md`
 
 ## Questions / blockers
