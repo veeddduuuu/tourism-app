@@ -1,4 +1,4 @@
-import { pgTable, uuid, text, decimal, integer, jsonb, boolean, timestamp, index } from 'drizzle-orm/pg-core';
+import { pgTable, uuid, text, decimal, integer, jsonb, boolean, timestamp, index, uniqueIndex } from 'drizzle-orm/pg-core';
 import { sql } from 'drizzle-orm';
 
 export const states = pgTable('states', {
@@ -10,8 +10,12 @@ export const states = pgTable('states', {
   description: text('description'),
   imageUrl: text('image_url'),
   bestSeason: text('best_season'),
+  source: text('source'),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
-});
+}, (table) => ({
+  nameUid: uniqueIndex('states_name_uidx').on(table.name),
+}));
 
 export const cities = pgTable('cities', {
   id: uuid('id').defaultRandom().primaryKey(),
@@ -20,13 +24,20 @@ export const cities = pgTable('cities', {
   lat: decimal('lat', { precision: 9, scale: 6 }),
   lng: decimal('lng', { precision: 9, scale: 6 }),
   description: text('description'),
-});
+  externalId: text('external_id'),
+  source: text('source'),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
+}, (table) => ({
+  externalUid: uniqueIndex('cities_external_id_uidx').on(table.externalId),
+  stateNameUid: uniqueIndex('cities_state_name_uidx').on(table.stateId, table.name),
+}));
 
 export const places = pgTable('places', {
   id: uuid('id').defaultRandom().primaryKey(),
   cityId: uuid('city_id').references(() => cities.id),
   name: text('name').notNull(),
-  category: text('category'), // 'heritage' | 'temple' | 'nature' | 'beach' | 'hill'
+  // heritage | temple | nature | beach | hill | museum | fort | other
+  category: text('category'),
   lat: decimal('lat', { precision: 9, scale: 6 }),
   lng: decimal('lng', { precision: 9, scale: 6 }),
   rating: decimal('rating', { precision: 2, scale: 1 }),
@@ -35,11 +46,14 @@ export const places = pgTable('places', {
   historyBrief: text('history_brief'),
   images: jsonb('images'),
   wikipediaUrl: text('wikipedia_url'),
-}, (table) => {
-  return {
-    nameSearchIndex: index('places_fts').using('gin', sql`to_tsvector('english', ${table.name} || ' ' || COALESCE(${table.historyBrief}, ''))`),
-  };
-});
+  externalId: text('external_id'),
+  source: text('source'),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
+}, (table) => ({
+  nameSearchIndex: index('places_fts').using('gin', sql`to_tsvector('english', ${table.name} || ' ' || COALESCE(${table.historyBrief}, ''))`),
+  externalUid: uniqueIndex('places_external_id_uidx').on(table.externalId),
+  cityNameUid: uniqueIndex('places_city_name_uidx').on(table.cityId, table.name),
+}));
 
 export const historyEntries = pgTable('history_entries', {
   id: uuid('id').defaultRandom().primaryKey(),
@@ -49,7 +63,12 @@ export const historyEntries = pgTable('history_entries', {
   eventTitle: text('event_title').notNull(),
   description: text('description'),
   mediaUrl: text('media_url'),
-});
+  externalId: text('external_id'),
+  source: text('source'),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
+}, (table) => ({
+  externalUid: uniqueIndex('history_external_id_uidx').on(table.externalId),
+}));
 
 export const traditionalFoods = pgTable('traditional_foods', {
   id: uuid('id').defaultRandom().primaryKey(),
@@ -60,11 +79,13 @@ export const traditionalFoods = pgTable('traditional_foods', {
   difficulty: text('difficulty'),
   description: text('description'),
   imageUrl: text('image_url'),
-}, (table) => {
-  return {
-    nameSearchIndex: index('foods_fts').using('gin', sql`to_tsvector('english', ${table.name} || ' ' || COALESCE(${table.description}, ''))`),
-  };
-});
+  externalId: text('external_id'),
+  source: text('source'),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
+}, (table) => ({
+  nameSearchIndex: index('foods_fts').using('gin', sql`to_tsvector('english', ${table.name} || ' ' || COALESCE(${table.description}, ''))`),
+  externalUid: uniqueIndex('foods_external_id_uidx').on(table.externalId),
+}));
 
 export const recipes = pgTable('recipes', {
   id: uuid('id').defaultRandom().primaryKey(),
@@ -73,7 +94,11 @@ export const recipes = pgTable('recipes', {
   steps: jsonb('steps'), // [{ step_no, instruction }]
   nutritionalInfo: jsonb('nutritional_info'),
   videoUrl: text('video_url'),
-});
+  source: text('source'),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
+}, (table) => ({
+  foodUid: uniqueIndex('recipes_food_id_uidx').on(table.foodId),
+}));
 
 export const festivals = pgTable('festivals', {
   id: uuid('id').defaultRandom().primaryKey(),
@@ -84,7 +109,12 @@ export const festivals = pgTable('festivals', {
   description: text('description'),
   traditions: text('traditions'),
   isNational: boolean('is_national').default(false),
-});
+  externalId: text('external_id'),
+  source: text('source'),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
+}, (table) => ({
+  externalUid: uniqueIndex('festivals_external_id_uidx').on(table.externalId),
+}));
 
 export const hotels = pgTable('hotels', {
   id: uuid('id').defaultRandom().primaryKey(),
