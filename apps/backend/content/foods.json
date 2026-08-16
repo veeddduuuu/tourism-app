@@ -1,0 +1,555 @@
+[
+  {
+    "externalId": "food:butter-chicken",
+    "name": "Butter Chicken",
+    "state": "Punjab",
+    "category": "non-veg",
+    "prepTime": 50,
+    "difficulty": "Medium",
+    "description": "Tandoori chicken simmered in a tomato-butter gravy — a Delhi-Punjab restaurant classic.",
+    "mealDbName": "Butter Chicken",
+    "ingredients": [
+      { "name": "chicken thighs", "qty": "500", "unit": "g" },
+      { "name": "yogurt", "qty": "100", "unit": "g" },
+      { "name": "tomato puree", "qty": "400", "unit": "g" },
+      { "name": "butter", "qty": "50", "unit": "g" },
+      { "name": "cream", "qty": "80", "unit": "ml" },
+      { "name": "garam masala", "qty": "1", "unit": "tsp" }
+    ],
+    "steps": [
+      { "step_no": 1, "instruction": "Marinate chicken in yogurt, ginger-garlic, chilli, and salt for at least 30 minutes." },
+      { "step_no": 2, "instruction": "Grill or pan-sear until lightly charred." },
+      { "step_no": 3, "instruction": "Cook tomato puree with butter, kasuri methi, and spices until thick." },
+      { "step_no": 4, "instruction": "Add chicken and cream; simmer 10 minutes and finish with a knob of butter." }
+    ]
+  },
+  {
+    "externalId": "food:amritsari-kulcha",
+    "name": "Amritsari Kulcha",
+    "state": "Punjab",
+    "category": "veg",
+    "prepTime": 40,
+    "difficulty": "Medium",
+    "description": "Leavened stuffed bread baked in a tandoor, eaten with chole in Amritsar.",
+    "ingredients": [
+      { "name": "maida", "qty": "300", "unit": "g" },
+      { "name": "yogurt", "qty": "50", "unit": "g" },
+      { "name": "potato filling", "qty": "200", "unit": "g" }
+    ],
+    "steps": [
+      { "step_no": 1, "instruction": "Knead a soft dough with flour, yogurt, oil, and a pinch of baking soda." },
+      { "step_no": 2, "instruction": "Stuff with spiced mashed potato, onion, and coriander." },
+      { "step_no": 3, "instruction": "Roll, brush with ghee, and bake until blistered." }
+    ]
+  },
+  {
+    "externalId": "food:chole-bhature",
+    "name": "Chole Bhature",
+    "state": "Punjab",
+    "category": "veg",
+    "prepTime": 45,
+    "difficulty": "Medium",
+    "description": "Spiced chickpea curry with puffed fried bread, a north Indian breakfast staple.",
+    "ingredients": [
+      { "name": "chickpeas", "qty": "250", "unit": "g" },
+      { "name": "maida", "qty": "250", "unit": "g" },
+      { "name": "yogurt", "qty": "80", "unit": "g" }
+    ],
+    "steps": [
+      { "step_no": 1, "instruction": "Soak and boil chickpeas; cook in onion-tomato masala with chole spice." },
+      { "step_no": 2, "instruction": "Ferment a yogurt dough, roll discs, and deep-fry until they balloon." }
+    ]
+  },
+  {
+    "externalId": "food:rogan-josh",
+    "name": "Rogan Josh",
+    "state": "Jammu & Kashmir",
+    "category": "non-veg",
+    "prepTime": 75,
+    "difficulty": "Hard",
+    "description": "Kashmiri lamb curry coloured with ratan jot or Kashmiri chilli, fragrant with fennel and ginger.",
+    "ingredients": [
+      { "name": "lamb", "qty": "700", "unit": "g" },
+      { "name": "yogurt", "qty": "150", "unit": "g" },
+      { "name": "Kashmiri chilli", "qty": "2", "unit": "tsp" },
+      { "name": "fennel powder", "qty": "1", "unit": "tsp" }
+    ],
+    "steps": [
+      { "step_no": 1, "instruction": "Brown lamb in ghee with whole spices." },
+      { "step_no": 2, "instruction": "Stir in yogurt off the heat so it does not split." },
+      { "step_no": 3, "instruction": "Add chilli, fennel, and ginger; slow-cook until the meat is tender." }
+    ]
+  },
+  {
+    "externalId": "food:yakhni-pulao",
+    "name": "Yakhni Pulao",
+    "state": "Jammu & Kashmir",
+    "category": "non-veg",
+    "prepTime": 60,
+    "difficulty": "Medium",
+    "description": "Aromatic rice cooked in a mild yogurt-mutton stock, a Kashmiri festive pulao.",
+    "ingredients": [
+      { "name": "basmati rice", "qty": "300", "unit": "g" },
+      { "name": "mutton", "qty": "400", "unit": "g" },
+      { "name": "yogurt", "qty": "100", "unit": "g" }
+    ],
+    "steps": [
+      { "step_no": 1, "instruction": "Simmer mutton with whole spices to make yakhni stock." },
+      { "step_no": 2, "instruction": "Cook soaked rice in the strained stock until fluffy." }
+    ]
+  },
+  {
+    "externalId": "food:aloo-dum",
+    "name": "Kashmiri Dum Aloo",
+    "state": "Jammu & Kashmir",
+    "category": "veg",
+    "prepTime": 40,
+    "difficulty": "Medium",
+    "description": "Baby potatoes in a yogurt-chilli gravy without onion or garlic, in the Kashmiri pandit style.",
+    "ingredients": [
+      { "name": "baby potatoes", "qty": "500", "unit": "g" },
+      { "name": "yogurt", "qty": "200", "unit": "g" },
+      { "name": "Kashmiri chilli", "qty": "2", "unit": "tsp" }
+    ],
+    "steps": [
+      { "step_no": 1, "instruction": "Prick, fry, or bake baby potatoes until golden." },
+      { "step_no": 2, "instruction": "Cook yogurt gravy with chilli, fennel, and ginger; add potatoes and dum-cook." }
+    ]
+  },
+  {
+    "externalId": "food:dal-baati-churma",
+    "name": "Dal Baati Churma",
+    "state": "Rajasthan",
+    "category": "veg",
+    "prepTime": 70,
+    "difficulty": "Medium",
+    "description": "Baked wheat baatis served with panchmel dal and sweet crushed churma — Rajasthan's signature thali.",
+    "ingredients": [
+      { "name": "whole wheat flour", "qty": "300", "unit": "g" },
+      { "name": "mixed dals", "qty": "200", "unit": "g" },
+      { "name": "ghee", "qty": "80", "unit": "g" }
+    ],
+    "steps": [
+      { "step_no": 1, "instruction": "Shape stiff wheat dough into baatis and bake until cracked and brown." },
+      { "step_no": 2, "instruction": "Soak hot baatis in ghee; serve with spicy mixed dal and sweet churma." }
+    ]
+  },
+  {
+    "externalId": "food:laal-maas",
+    "name": "Laal Maas",
+    "state": "Rajasthan",
+    "category": "non-veg",
+    "prepTime": 70,
+    "difficulty": "Hard",
+    "description": "Fiery mutton curry of Mathania chillies from the Thar, traditionally cooked in a pot over wood."
+  },
+  {
+    "externalId": "food:ghevar",
+    "name": "Ghevar",
+    "state": "Rajasthan",
+    "category": "sweet",
+    "prepTime": 50,
+    "difficulty": "Hard",
+    "description": "Disc-shaped honeycomb sweet soaked in sugar syrup, made for Teej and Raksha Bandhan."
+  },
+  {
+    "externalId": "food:lucknowi-biryani",
+    "name": "Lucknowi Biryani",
+    "state": "Uttar Pradesh",
+    "category": "non-veg",
+    "prepTime": 90,
+    "difficulty": "Hard",
+    "description": "Awadhi pakki/kacchi layered rice and marinated meat steamed under a sealed dough lid.",
+    "mealDbName": "Biryani",
+    "ingredients": [
+      { "name": "basmati rice", "qty": "400", "unit": "g" },
+      { "name": "mutton or chicken", "qty": "500", "unit": "g" },
+      { "name": "yogurt", "qty": "150", "unit": "g" },
+      { "name": "saffron milk", "qty": "4", "unit": "tbsp" }
+    ],
+    "steps": [
+      { "step_no": 1, "instruction": "Marinate meat with yogurt and whole spices." },
+      { "step_no": 2, "instruction": "Parboil fragrant basmati; layer with meat and saffron." },
+      { "step_no": 3, "instruction": "Seal the pot and dum-cook on low heat until steam-cooked through." }
+    ]
+  },
+  {
+    "externalId": "food:galouti-kebab",
+    "name": "Galouti Kebab",
+    "state": "Uttar Pradesh",
+    "category": "non-veg",
+    "prepTime": 40,
+    "difficulty": "Hard",
+    "description": "Melt-in-the-mouth minced meat kebabs invented in Lucknow for a toothless Nawab."
+  },
+  {
+    "externalId": "food:peetha",
+    "name": "Varanasi Pedha",
+    "state": "Uttar Pradesh",
+    "category": "sweet",
+    "prepTime": 30,
+    "difficulty": "Easy",
+    "description": "Milk-solid sweet of the Banaras tradition, often offered as prasad."
+  },
+  {
+    "externalId": "food:litti-chokha",
+    "name": "Litti Chokha",
+    "state": "Bihar",
+    "category": "veg",
+    "prepTime": 50,
+    "difficulty": "Medium",
+    "description": "Roasted sattu-stuffed wheat balls with mashed spiced potato, eggplant, and tomato."
+  },
+  {
+    "externalId": "food:sattu-paratha",
+    "name": "Sattu Paratha",
+    "state": "Bihar",
+    "category": "veg",
+    "prepTime": 25,
+    "difficulty": "Easy",
+    "description": "Whole-wheat flatbread stuffed with spiced roasted gram flour, a Bihar staple."
+  },
+  {
+    "externalId": "food:rosogolla",
+    "name": "Rasgulla",
+    "state": "West Bengal",
+    "category": "sweet",
+    "prepTime": 40,
+    "difficulty": "Medium",
+    "description": "Chhena balls simmered in light sugar syrup — a Bengali (and Odia) celebration sweet."
+  },
+  {
+    "externalId": "food:kosha-mangsho",
+    "name": "Kosha Mangsho",
+    "state": "West Bengal",
+    "category": "non-veg",
+    "prepTime": 80,
+    "difficulty": "Medium",
+    "description": "Slow-bhuna mutton of Bengal, dark, thick, and served with luchis or rice."
+  },
+  {
+    "externalId": "food:shorshe-ilish",
+    "name": "Shorshe Ilish",
+    "state": "West Bengal",
+    "category": "non-veg",
+    "prepTime": 30,
+    "difficulty": "Medium",
+    "description": "Hilsa in a pungent mustard-poppy gravy, the monsoon pride of Bengal."
+  },
+  {
+    "externalId": "food:sandesh",
+    "name": "Sandesh",
+    "state": "West Bengal",
+    "category": "sweet",
+    "prepTime": 25,
+    "difficulty": "Easy",
+    "description": "Delicate chhena sweet often flavoured with nolen gur in winter."
+  },
+  {
+    "externalId": "food:dalma",
+    "name": "Dalma",
+    "state": "Odisha",
+    "category": "veg",
+    "prepTime": 40,
+    "difficulty": "Easy",
+    "description": "Toor dal cooked with native vegetables and tempered with ghee and cumin — temple-style Odia comfort food."
+  },
+  {
+    "externalId": "food:chena-poda",
+    "name": "Chhena Poda",
+    "state": "Odisha",
+    "category": "sweet",
+    "prepTime": 60,
+    "difficulty": "Medium",
+    "description": "Baked caramelised chhena cake, Odisha's signature roasted cheese sweet."
+  },
+  {
+    "externalId": "food:masala-dosa",
+    "name": "Masala Dosa",
+    "state": "Karnataka",
+    "category": "veg",
+    "prepTime": 35,
+    "difficulty": "Medium",
+    "description": "Crisp fermented rice-lentil crepe filled with spiced potato, served with chutney and sambar.",
+    "mealDbName": "Masala Dosa",
+    "ingredients": [
+      { "name": "dosa batter", "qty": "400", "unit": "ml" },
+      { "name": "potato masala", "qty": "250", "unit": "g" }
+    ],
+    "steps": [
+      { "step_no": 1, "instruction": "Spread fermented batter thin on a hot tava." },
+      { "step_no": 2, "instruction": "Add potato masala, fold, and serve with coconut chutney and sambar." }
+    ]
+  },
+  {
+    "externalId": "food:bisi-bele-bath",
+    "name": "Bisi Bele Bath",
+    "state": "Karnataka",
+    "category": "veg",
+    "prepTime": 45,
+    "difficulty": "Medium",
+    "description": "Hot lentil-rice with vegetables and a distinctive spice blend from Karnataka."
+  },
+  {
+    "externalId": "food:mysore-pak",
+    "name": "Mysore Pak",
+    "state": "Karnataka",
+    "category": "sweet",
+    "prepTime": 30,
+    "difficulty": "Hard",
+    "description": "Ghee-rich gram-flour fudge created in the Mysore palace kitchens."
+  },
+  {
+    "externalId": "food:hyderabadi-biryani",
+    "name": "Hyderabadi Biryani",
+    "state": "Telangana",
+    "category": "non-veg",
+    "prepTime": 90,
+    "difficulty": "Hard",
+    "description": "Kacchi dum biryani of the Deccan: raw marinated meat layered with half-cooked rice.",
+    "mealDbName": "Chicken Biryani"
+  },
+  {
+    "externalId": "food:haleem",
+    "name": "Haleem",
+    "state": "Telangana",
+    "category": "non-veg",
+    "prepTime": 180,
+    "difficulty": "Hard",
+    "description": "Slow-pounded Ramadan porridge of wheat, lentils, and meat, iconic in Hyderabad."
+  },
+  {
+    "externalId": "food:appam-stew",
+    "name": "Appam with Vegetable Stew",
+    "state": "Kerala",
+    "category": "veg",
+    "prepTime": 40,
+    "difficulty": "Medium",
+    "description": "Lacy fermented rice hoppers with a coconut-milk vegetable stew."
+  },
+  {
+    "externalId": "food:kerala-fish-curry",
+    "name": "Kerala Fish Curry",
+    "state": "Kerala",
+    "category": "non-veg",
+    "prepTime": 35,
+    "difficulty": "Medium",
+    "description": "Kudampuli or mango-sour fish curry in coconut, a Syrian Christian and coastal staple."
+  },
+  {
+    "externalId": "food:puttu-kadala",
+    "name": "Puttu Kadala",
+    "state": "Kerala",
+    "category": "veg",
+    "prepTime": 35,
+    "difficulty": "Easy",
+    "description": "Steamed rice-coconut cylinders served with black chickpea curry."
+  },
+  {
+    "externalId": "food:sadya-avial",
+    "name": "Avial",
+    "state": "Kerala",
+    "category": "veg",
+    "prepTime": 40,
+    "difficulty": "Easy",
+    "description": "Coconut-yogurt mixed vegetable dish essential to the Onam sadya."
+  },
+  {
+    "externalId": "food:chettinad-chicken",
+    "name": "Chettinad Chicken",
+    "state": "Tamil Nadu",
+    "category": "non-veg",
+    "prepTime": 50,
+    "difficulty": "Medium",
+    "description": "Pepper-fennel chicken of the Chettiar kitchens, roasted whole spices ground fresh."
+  },
+  {
+    "externalId": "food:idli-sambar",
+    "name": "Idli Sambar",
+    "state": "Tamil Nadu",
+    "category": "veg",
+    "prepTime": 30,
+    "difficulty": "Easy",
+    "description": "Steamed rice-lentil cakes with a tamarind-lentil vegetable sambar."
+  },
+  {
+    "externalId": "food:filter-coffee",
+    "name": "Filter Coffee",
+    "state": "Tamil Nadu",
+    "category": "veg",
+    "prepTime": 10,
+    "difficulty": "Easy",
+    "description": "Decoction coffee mixed with boiled milk and poured between tumbler and davara."
+  },
+  {
+    "externalId": "food:vada-pav",
+    "name": "Vada Pav",
+    "state": "Maharashtra",
+    "category": "veg",
+    "prepTime": 25,
+    "difficulty": "Easy",
+    "description": "Mumbai's street sandwich: spiced potato fritter in a pav with chutneys.",
+    "ingredients": [
+      { "name": "potatoes", "qty": "400", "unit": "g" },
+      { "name": "besan", "qty": "120", "unit": "g" },
+      { "name": "pav buns", "qty": "4" }
+    ],
+    "steps": [
+      { "step_no": 1, "instruction": "Mash spiced potato, shape, dip in gram-flour batter, and fry." },
+      { "step_no": 2, "instruction": "Tuck into pav with garlic and green chutney." }
+    ]
+  },
+  {
+    "externalId": "food:pav-bhaji",
+    "name": "Pav Bhaji",
+    "state": "Maharashtra",
+    "category": "veg",
+    "prepTime": 35,
+    "difficulty": "Easy",
+    "description": "Mashed vegetable curry cooked on a tava, served with buttered pav."
+  },
+  {
+    "externalId": "food:puran-poli",
+    "name": "Puran Poli",
+    "state": "Maharashtra",
+    "category": "sweet",
+    "prepTime": 50,
+    "difficulty": "Medium",
+    "description": "Festive flatbread stuffed with sweet chana dal and jaggery."
+  },
+  {
+    "externalId": "food:misal-pav",
+    "name": "Misal Pav",
+    "state": "Maharashtra",
+    "category": "veg",
+    "prepTime": 40,
+    "difficulty": "Medium",
+    "description": "Sprouted-bean curry with farsan and pav, a fiery Pune–Kolhapur breakfast."
+  },
+  {
+    "externalId": "food:goan-fish-curry",
+    "name": "Goan Fish Curry",
+    "state": "Goa",
+    "category": "non-veg",
+    "prepTime": 35,
+    "difficulty": "Medium",
+    "description": "Coconut-tamarind fish curry with Kashmiri chilli, eaten with rice."
+  },
+  {
+    "externalId": "food:bebinca",
+    "name": "Bebinca",
+    "state": "Goa",
+    "category": "sweet",
+    "prepTime": 90,
+    "difficulty": "Hard",
+    "description": "Layered Indo-Portuguese coconut-egg pudding baked one sheet at a time."
+  },
+  {
+    "externalId": "food:dhokla",
+    "name": "Dhokla",
+    "state": "Gujarat",
+    "category": "veg",
+    "prepTime": 35,
+    "difficulty": "Easy",
+    "description": "Steamed fermented gram-flour cake tempered with mustard and curry leaf."
+  },
+  {
+    "externalId": "food:thepla",
+    "name": "Thepla",
+    "state": "Gujarat",
+    "category": "veg",
+    "prepTime": 25,
+    "difficulty": "Easy",
+    "description": "Fenugreek flatbread that travels well — a Gujarati journey food."
+  },
+  {
+    "externalId": "food:undhiyu",
+    "name": "Undhiyu",
+    "state": "Gujarat",
+    "category": "veg",
+    "prepTime": 70,
+    "difficulty": "Hard",
+    "description": "Winter mixed-vegetable casserole of Surat, traditionally cooked inverted in an earthen pot."
+  },
+  {
+    "externalId": "food:poha",
+    "name": "Indori Poha",
+    "state": "Madhya Pradesh",
+    "category": "veg",
+    "prepTime": 20,
+    "difficulty": "Easy",
+    "description": "Flattened rice with jeeravan masala, sev, and pomegranate — Indore's breakfast."
+  },
+  {
+    "externalId": "food:poha-jalebi",
+    "name": "Jalebi",
+    "state": "Madhya Pradesh",
+    "category": "sweet",
+    "prepTime": 40,
+    "difficulty": "Medium",
+    "description": "Fermented batter coils fried crisp and soaked in saffron syrup, eaten with poha in Indore."
+  },
+  {
+    "externalId": "food:dal-bafla",
+    "name": "Dal Bafla",
+    "state": "Madhya Pradesh",
+    "category": "veg",
+    "prepTime": 60,
+    "difficulty": "Medium",
+    "description": "Boiled-then-baked wheat dumplings with dal, Malwa's cousin of Rajasthani baati."
+  },
+  {
+    "externalId": "food:thukpa",
+    "name": "Thukpa",
+    "state": "Sikkim",
+    "category": "non-veg",
+    "prepTime": 35,
+    "difficulty": "Easy",
+    "description": "Himalayan noodle soup of the Tibetan-Sikkimese table, often with chicken or vegetables."
+  },
+  {
+    "externalId": "food:momos",
+    "name": "Momos",
+    "state": "Sikkim",
+    "category": "non-veg",
+    "prepTime": 40,
+    "difficulty": "Medium",
+    "description": "Steamed dumplings with spicy tomato-sesame chutney, ubiquitous across the eastern Himalaya."
+  },
+  {
+    "externalId": "food:assamese-tenga",
+    "name": "Masor Tenga",
+    "state": "Assam",
+    "category": "non-veg",
+    "prepTime": 30,
+    "difficulty": "Easy",
+    "description": "Light sour fish curry with tomatoes or thekera, everyday Assamese food."
+  },
+  {
+    "externalId": "food:pitha",
+    "name": "Til Pitha",
+    "state": "Assam",
+    "category": "sweet",
+    "prepTime": 30,
+    "difficulty": "Medium",
+    "description": "Rice-flour pancake stuffed with sesame and jaggery, made at Magh Bihu."
+  },
+  {
+    "externalId": "food:jadoh",
+    "name": "Jadoh",
+    "state": "Meghalaya",
+    "category": "non-veg",
+    "prepTime": 40,
+    "difficulty": "Easy",
+    "description": "Khasi red rice cooked with pork, a Meghalaya comfort dish."
+  },
+  {
+    "externalId": "food:skyu",
+    "name": "Skyu",
+    "state": "Ladakh",
+    "category": "veg",
+    "prepTime": 45,
+    "difficulty": "Medium",
+    "description": "Thumb-pressed wheat pasta stew with root vegetables, a Ladakhi winter meal."
+  }
+]

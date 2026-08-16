@@ -1,0 +1,301 @@
+[
+  {
+    "externalId": "history:indus-valley",
+    "eventTitle": "Indus Valley cities flourish",
+    "era": "ancient",
+    "year": -2600,
+    "description": "Harappa and Mohenjo-daro — planned brick cities with drainage, seals, and long-distance trade — mark South Asia's first urban age."
+  },
+  {
+    "externalId": "history:vedic-corpus",
+    "eventTitle": "Later Vedic world on the Ganga plain",
+    "era": "ancient",
+    "year": -1000,
+    "description": "Pastoral and agrarian janapadas take shape; ritual and philosophical texts of the later Vedic corpus are composed."
+  },
+  {
+    "externalId": "history:mahakajanapadas",
+    "eventTitle": "Sixteen Mahajanapadas",
+    "era": "ancient",
+    "year": -600,
+    "description": "Northern India organises into large kingdoms and oligarchies; Magadha begins its rise from the eastern Gangetic plain."
+  },
+  {
+    "externalId": "history:buddha",
+    "eventTitle": "The Buddha's enlightenment",
+    "era": "ancient",
+    "year": -528,
+    "description": "Siddhartha Gautama attains awakening at Bodh Gaya. The Bodhi tree precinct remains a living pilgrimage centre.",
+    "placeExternalId": "Q233000",
+    "placeName": "Mahabodhi Temple"
+  },
+  {
+    "externalId": "history:nanda-maurya",
+    "eventTitle": "Chandragupta founds the Maurya Empire",
+    "era": "ancient",
+    "year": -321,
+    "description": "With Chanakya, Chandragupta Maurya overturns the Nandas and builds the first pan-Indian imperial state, later described in the Arthashastra tradition."
+  },
+  {
+    "externalId": "history:ashoka-kalinga",
+    "eventTitle": "Ashoka and the Kalinga war",
+    "era": "ancient",
+    "year": -261,
+    "description": "The Kalinga campaign's slaughter turns Ashoka toward dhamma. His edicts, carved from Kandahar to Karnataka, are among India's earliest dated public texts."
+  },
+  {
+    "externalId": "history:sanchi",
+    "eventTitle": "Great Stupa at Sanchi enlarged",
+    "era": "ancient",
+    "year": -50,
+    "description": "Mauryan brick core, Shunga and Satavahana gateways: Sanchi becomes a textbook of early Buddhist art."
+  },
+  {
+    "externalId": "history:kushan-gandhara",
+    "eventTitle": "Kushan and Gandhara Buddhist art",
+    "era": "ancient",
+    "year": 120,
+    "description": "Under Kanishka and successors, Silk Road Kushan power funds monasteries; Buddha is widely shown in human form in Gandhara and Mathura."
+  },
+  {
+    "externalId": "history:gupta",
+    "eventTitle": "Gupta classical age",
+    "era": "ancient",
+    "year": 320,
+    "description": "From Magadha, the Guptas preside over a flowering of Sanskrit literature, mathematics, and temple beginnings often called India's classical golden age."
+  },
+  {
+    "externalId": "history:ajanta",
+    "eventTitle": "Ajanta caves painted",
+    "era": "ancient",
+    "year": 460,
+    "description": "Vakataka-period viharas and chaityas in a Waghora gorge receive their famous murals of Jataka stories and courtly life.",
+    "placeName": "Ajanta Caves"
+  },
+  {
+    "externalId": "history:ellora",
+    "eventTitle": "Kailasa temple cut at Ellora",
+    "era": "medieval",
+    "year": 760,
+    "description": "Rashtrakuta patrons have a whole Shiva mountain carved downward from the Deccan basalt — among the world's largest monolithic excavations.",
+    "placeName": "Ellora Caves"
+  },
+  {
+    "externalId": "history:chola-brihadisvara",
+    "eventTitle": "Brihadisvara Temple consecrated",
+    "era": "medieval",
+    "year": 1010,
+    "description": "Rajaraja I completes the great Chola vimana at Thanjavur, a granite statement of imperial Shaivism.",
+    "placeName": "Brihadisvara Temple"
+  },
+  {
+    "externalId": "history:mahmud-somnath",
+    "eventTitle": "Raids of Mahmud of Ghazni",
+    "era": "medieval",
+    "year": 1025,
+    "description": "Ghaznavid campaigns into the north, including Somnath, mark a new era of contact — and conflict — between Central Asian armies and Indian kingdoms."
+  },
+  {
+    "externalId": "history:delhi-sultanate",
+    "eventTitle": "Delhi Sultanate established",
+    "era": "medieval",
+    "year": 1206,
+    "description": "Qutb-ud-din Aibak's line begins more than three centuries of sultanate rule from Delhi, leaving the Qutb complex and a Persianate court culture.",
+    "placeName": "Qutb Minar"
+  },
+  {
+    "externalId": "history:khajuraho",
+    "eventTitle": "Chandela temples at Khajuraho",
+    "era": "medieval",
+    "year": 950,
+    "description": "A cluster of Nagara temples, including Kandariya Mahadeva, is raised in Bundelkhand with some of India's most celebrated sculpture.",
+    "placeName": "Kandariya Mahadeva Temple"
+  },
+  {
+    "externalId": "history:konark",
+    "eventTitle": "Konark Sun Temple built",
+    "era": "medieval",
+    "year": 1250,
+    "description": "Narasimhadeva I of the Eastern Ganga dynasty commissions a colossal stone chariot for Surya on the Odisha coast.",
+    "placeName": "Konark Sun Temple"
+  },
+  {
+    "externalId": "history:vijayanagara",
+    "eventTitle": "Vijayanagara founded",
+    "era": "medieval",
+    "year": 1336,
+    "description": "Harihara and Bukka establish a Hindu imperial capital on the Tungabhadra. Hampi's ruins still map its sacred and royal core.",
+    "placeName": "Virupaksha Temple"
+  },
+  {
+    "externalId": "history:talikota",
+    "eventTitle": "Battle of Talikota",
+    "era": "medieval",
+    "year": 1565,
+    "description": "Deccan sultanates defeat Vijayanagara; Hampi is sacked, and the empire's political centre shifts south."
+  },
+  {
+    "externalId": "history:babur-panipat",
+    "eventTitle": "First Battle of Panipat",
+    "era": "medieval",
+    "year": 1526,
+    "description": "Babur defeats Ibrahim Lodi and founds Mughal rule in northern India."
+  },
+  {
+    "externalId": "history:akbar",
+    "eventTitle": "Akbar's imperial synthesis",
+    "era": "medieval",
+    "year": 1556,
+    "description": "Jalal-ud-din Muhammad Akbar expands Mughal power, experiments with sulh-i-kul, and builds Fatehpur Sikri as a short-lived capital."
+  },
+  {
+    "externalId": "history:taj-mahal",
+    "eventTitle": "Taj Mahal commissioned",
+    "era": "medieval",
+    "year": 1632,
+    "description": "Shah Jahan begins the marble mausoleum for Mumtaz Mahal on the Yamuna at Agra, finished in the 1640s with a charbagh and mosque-jawab pair.",
+    "placeExternalId": "Q9141",
+    "placeName": "Taj Mahal"
+  },
+  {
+    "externalId": "history:red-fort",
+    "eventTitle": "Shahjahanabad and the Red Fort",
+    "era": "medieval",
+    "year": 1648,
+    "description": "The court moves to a new walled city in Delhi; the Lal Qila becomes the ceremonial heart of later Mughal emperors.",
+    "placeName": "Red Fort"
+  },
+  {
+    "externalId": "history:shivaji",
+    "eventTitle": "Shivaji crowned Chhatrapati",
+    "era": "medieval",
+    "year": 1674,
+    "description": "At Raigad, Shivaji Bhonsle is crowned, giving the Maratha polity a sovereign centre that will later challenge Mughal supremacy."
+  },
+  {
+    "externalId": "history:guru-nanak",
+    "eventTitle": "Guru Nanak's lifetime",
+    "era": "medieval",
+    "year": 1469,
+    "description": "Birth of Guru Nanak in the Punjab. Sikh teaching of ik onkar, langar, and rejection of caste privilege takes root; Harmandir Sahib later becomes its architectural focus.",
+    "placeName": "Golden Temple"
+  },
+  {
+    "externalId": "history:plassey",
+    "eventTitle": "Battle of Plassey",
+    "era": "british",
+    "year": 1757,
+    "description": "Clive's victory over Siraj-ud-Daulah, aided by treachery within Bengal, opens Company dominion in eastern India."
+  },
+  {
+    "externalId": "history:1857",
+    "eventTitle": "The revolt of 1857",
+    "era": "british",
+    "year": 1857,
+    "description": "A widespread uprising against the East India Company — Meerut, Delhi, Kanpur, Lucknow, Jhansi — ends Company rule and brings the Crown."
+  },
+  {
+    "externalId": "history:qutb",
+    "eventTitle": "Qutb Minar begun",
+    "era": "medieval",
+    "year": 1199,
+    "description": "Aibak starts the victory minaret beside the Quwwat-ul-Islam mosque; Iltutmish and later sultans raise it to its present height.",
+    "placeName": "Qutb Minar"
+  },
+  {
+    "externalId": "history:meenakshi",
+    "eventTitle": "Madurai Nayak rebuilding of Meenakshi temple",
+    "era": "medieval",
+    "year": 1623,
+    "description": "Under Tirumala Nayaka the vast temple-city of Meenakshi-Sundareshwarar takes much of its present processional form.",
+    "placeName": "Meenakshi Temple"
+  },
+  {
+    "externalId": "history:amritsar-harmandir",
+    "eventTitle": "Harmandir Sahib established",
+    "era": "medieval",
+    "year": 1604,
+    "description": "Guru Arjan installs the Adi Granth in the newly built Harmandir Sahib, the tank-girt centre of Sikh worship.",
+    "placeName": "Golden Temple"
+  },
+  {
+    "externalId": "history:jallianwala",
+    "eventTitle": "Jallianwala Bagh massacre",
+    "era": "british",
+    "year": 1919,
+    "description": "Troops under General Dyer fire on an unarmed gathering in Amritsar. The massacre radicalises the national movement.",
+    "placeName": "Jallianwala Bagh"
+  },
+  {
+    "externalId": "history:noncooperation",
+    "eventTitle": "Non-cooperation movement",
+    "era": "british",
+    "year": 1920,
+    "description": "Gandhi's first nationwide satyagraha campaign after Jallianwala and the Khilafat moment draws millions into organised boycott."
+  },
+  {
+    "externalId": "history:dandi",
+    "eventTitle": "Salt March to Dandi",
+    "era": "british",
+    "year": 1930,
+    "description": "Gandhi walks from Sabarmati to the sea to make salt, turning a tax into a global symbol of civil disobedience."
+  },
+  {
+    "externalId": "history:quit-india",
+    "eventTitle": "Quit India",
+    "era": "british",
+    "year": 1942,
+    "description": "With World War II underway, Congress demands immediate British withdrawal; a fierce underground and street struggle follows mass arrests."
+  },
+  {
+    "externalId": "history:independence",
+    "eventTitle": "Independence and Partition",
+    "era": "modern",
+    "year": 1947,
+    "description": "On 15 August India becomes independent. Partition of British India creates Pakistan and triggers vast, violent displacement."
+  },
+  {
+    "externalId": "history:republic",
+    "eventTitle": "Constitution and the Republic",
+    "era": "modern",
+    "year": 1950,
+    "description": "The Constitution drafted under Ambedkar's chairmanship comes into force on 26 January; India becomes a sovereign democratic republic."
+  },
+  {
+    "externalId": "history:goa-liberation",
+    "eventTitle": "Liberation of Goa",
+    "era": "modern",
+    "year": 1961,
+    "description": "Indian forces end 451 years of Portuguese rule in Goa, Daman, and Diu."
+  },
+  {
+    "externalId": "history:green-revolution",
+    "eventTitle": "Green Revolution in the Punjab",
+    "era": "modern",
+    "year": 1968,
+    "description": "High-yield wheat, irrigation, and credit transform north-western agriculture and make India broadly self-sufficient in grain."
+  },
+  {
+    "externalId": "history:1991-reforms",
+    "eventTitle": "Economic liberalisation",
+    "era": "modern",
+    "year": 1991,
+    "description": "A balance-of-payments crisis opens a programme of reform that recasts industry, trade, and later India's services economy."
+  },
+  {
+    "externalId": "history:hampi-unesco",
+    "eventTitle": "Hampi inscribed as World Heritage",
+    "era": "modern",
+    "year": 1986,
+    "description": "UNESCO lists the Vijayanagara ruins at Hampi, recognising the boulder landscape of temples, bazaars, and royal enclosures.",
+    "placeName": "Hampi"
+  },
+  {
+    "externalId": "history:taj-unesco",
+    "eventTitle": "Taj Mahal listed by UNESCO",
+    "era": "modern",
+    "year": 1983,
+    "description": "The mausoleum complex is inscribed as a World Heritage Site, later drawing tens of millions of visitors a decade.",
+    "placeName": "Taj Mahal"
+  }
+]

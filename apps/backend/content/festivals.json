@@ -1,0 +1,361 @@
+[
+  {
+    "externalId": "festival:diwali",
+    "name": "Diwali",
+    "month": 10,
+    "durationDays": 5,
+    "isNational": true,
+    "description": "The festival of lights marking Rama's return to Ayodhya and the victory of light over darkness. Homes are lit with diyas, families exchange sweets, and fireworks light city skies.",
+    "traditions": "Rangoli, Lakshmi puja, new account books in business communities, and sharing of mithai."
+  },
+  {
+    "externalId": "festival:holi",
+    "name": "Holi",
+    "month": 3,
+    "durationDays": 2,
+    "isNational": true,
+    "description": "Spring festival of colours that began as a commemoration of Holika and Prahlada and of Krishna's play in Braj.",
+    "traditions": "Holika dahan on the eve, gulal and water the next day, thandai and gujiya."
+  },
+  {
+    "externalId": "festival:navratri",
+    "name": "Navratri",
+    "month": 10,
+    "durationDays": 9,
+    "isNational": true,
+    "description": "Nine nights of devotion to the goddess in her many forms, culminating in Dussehra.",
+    "traditions": "Garba and dandiya in Gujarat, golu displays in the south, fasting and kanya puja in the north."
+  },
+  {
+    "externalId": "festival:dussehra",
+    "name": "Dussehra",
+    "month": 10,
+    "durationDays": 1,
+    "isNational": true,
+    "description": "Vijayadashami — Rama's victory over Ravana, and in Bengal the immersion of Durga.",
+    "traditions": "Ramlila plays and burning of Ravana effigies; Ayudha puja in the south."
+  },
+  {
+    "externalId": "festival:ganesh-chaturthi",
+    "name": "Ganesh Chaturthi",
+    "month": 9,
+    "durationDays": 10,
+    "isNational": true,
+    "description": "Birth festival of Ganesha, taken to the streets most famously in Maharashtra.",
+    "traditions": "Public pandals, modak offerings, and visarjan immersions to the chant of Ganpati Bappa Morya."
+  },
+  {
+    "externalId": "festival:janmashtami",
+    "name": "Janmashtami",
+    "month": 8,
+    "durationDays": 2,
+    "isNational": true,
+    "description": "Midnight celebration of Krishna's birth, especially intense in Mathura–Vrindavan.",
+    "traditions": "Dahi handi in Maharashtra, raslila, fasting until the birth hour."
+  },
+  {
+    "externalId": "festival:eid-ul-fitr",
+    "name": "Eid-ul-Fitr",
+    "month": 4,
+    "durationDays": 1,
+    "isNational": true,
+    "description": "Feast that ends Ramadan. The Islamic calendar shifts the Gregorian month each year; April is a representative marker.",
+    "traditions": "Eid prayer, sheer khurma, new clothes, and charity (zakat al-fitr)."
+  },
+  {
+    "externalId": "festival:eid-ul-adha",
+    "name": "Eid-ul-Adha",
+    "month": 6,
+    "durationDays": 3,
+    "isNational": true,
+    "description": "Festival of sacrifice commemorating Ibrahim's devotion. Month varies with the lunar calendar.",
+    "traditions": "Congregational prayer and sharing of qurbani meat with family and those in need."
+  },
+  {
+    "externalId": "festival:christmas",
+    "name": "Christmas",
+    "month": 12,
+    "durationDays": 1,
+    "isNational": true,
+    "description": "Nativity of Christ, celebrated with particular public warmth in Goa, Kerala, the Northeast, and Indian cities.",
+    "traditions": "Midnight mass, cribs, cakes, and in Goa the feast of families after mass."
+  },
+  {
+    "externalId": "festival:makar-sankranti",
+    "name": "Makar Sankranti",
+    "month": 1,
+    "durationDays": 1,
+    "isNational": true,
+    "description": "Solar harvest festival as the sun enters Capricorn — Pongal, Magh Bihu, Lohri's neighbour, and kite-flying Uttarayan.",
+    "traditions": "Sesame-jaggery sweets, ritual baths, and regional harvest feasts."
+  },
+  {
+    "externalId": "festival:pongal",
+    "name": "Pongal",
+    "state": "Tamil Nadu",
+    "month": 1,
+    "durationDays": 4,
+    "isNational": false,
+    "description": "Tamil harvest thanksgiving when fresh rice is boiled until it overflows — pongalo pongal.",
+    "traditions": "Kolam, sugarcane, jallikattu in some districts, and honouring cattle on Mattu Pongal."
+  },
+  {
+    "externalId": "festival:onam",
+    "name": "Onam",
+    "state": "Kerala",
+    "month": 8,
+    "durationDays": 10,
+    "isNational": false,
+    "description": "Kerala's harvest homecoming of the legendary king Mahabali.",
+    "traditions": "Pookalam flower carpets, the Onam sadya feast, snake-boat races, and Kathakali."
+  },
+  {
+    "externalId": "festival:ugadi",
+    "name": "Ugadi",
+    "state": "Andhra Pradesh",
+    "month": 3,
+    "durationDays": 1,
+    "isNational": false,
+    "description": "Telugu and Kannada new year, named for the yuga's beginning.",
+    "traditions": "Bevu-bella or ugadi pachadi mixing six tastes of the coming year."
+  },
+  {
+    "externalId": "festival:ugadi-ka",
+    "name": "Yugadi",
+    "state": "Karnataka",
+    "month": 3,
+    "durationDays": 1,
+    "isNational": false,
+    "description": "Kannada new year aligned with the lunisolar calendar.",
+    "traditions": "Mango-neem pachadi, new clothes, and panchanga shravana."
+  },
+  {
+    "externalId": "festival:gudi-padwa",
+    "name": "Gudi Padwa",
+    "state": "Maharashtra",
+    "month": 3,
+    "durationDays": 1,
+    "isNational": false,
+    "description": "Marathi new year marked by a gudi — a silk-topped banner — outside the home.",
+    "traditions": "Puran poli, shrikhand, and processions in many towns."
+  },
+  {
+    "externalId": "festival:vishu",
+    "name": "Vishu",
+    "state": "Kerala",
+    "month": 4,
+    "durationDays": 1,
+    "isNational": false,
+    "description": "Malayalam new year whose first sight is the auspicious vishukkani arrangement.",
+    "traditions": "Kanikkonna flowers, kane coins for children, and a sadya."
+  },
+  {
+    "externalId": "festival:bihu",
+    "name": "Rongali Bihu",
+    "state": "Assam",
+    "month": 4,
+    "durationDays": 7,
+    "isNational": false,
+    "description": "Assamese spring new year and the most exuberant of the three Bihus.",
+    "traditions": "Bihu dance, pepa horn, pitha sweets, and community husori singing."
+  },
+  {
+    "externalId": "festival:durga-puja",
+    "name": "Durga Puja",
+    "state": "West Bengal",
+    "month": 10,
+    "durationDays": 5,
+    "isNational": false,
+    "description": "Bengal's greatest public festival: the goddess arrives, is adored, and returns to the river.",
+    "traditions": "Artful pandals, dhak drums, sindoor khela, and Dashami immersions."
+  },
+  {
+    "externalId": "festival:kali-puja",
+    "name": "Kali Puja",
+    "state": "West Bengal",
+    "month": 10,
+    "durationDays": 1,
+    "isNational": false,
+    "description": "Night of Kali coinciding with Diwali in Bengal, with lamps and tantric-folk worship."
+  },
+  {
+    "externalId": "festival:rath-yatra",
+    "name": "Rath Yatra",
+    "state": "Odisha",
+    "month": 7,
+    "durationDays": 9,
+    "isNational": false,
+    "description": "Jagannath, Balabhadra, and Subhadra ride enormous chariots from Puri's temple to Gundicha.",
+    "traditions": "Pulling the raths, chhera pahanra by the Gajapati king, and bahuda return."
+  },
+  {
+    "externalId": "festival:chhath",
+    "name": "Chhath Puja",
+    "state": "Bihar",
+    "month": 11,
+    "durationDays": 4,
+    "isNational": false,
+    "description": "Dawn and dusk offerings to Surya and Chhathi Maiya on river ghats of Bihar, east UP, and Jharkhand.",
+    "traditions": "36-hour fasts, thekua prasad, and standing in water at arghya."
+  },
+  {
+    "externalId": "festival:teej",
+    "name": "Teej",
+    "state": "Rajasthan",
+    "month": 8,
+    "durationDays": 3,
+    "isNational": false,
+    "description": "Monsoon festival of Parvati, celebrated with swings, mehndi, and processions in Jaipur.",
+    "traditions": "Ghevar, green bangles, and the Teej idol procession."
+  },
+  {
+    "externalId": "festival:desert-festival",
+    "name": "Jaisalmer Desert Festival",
+    "state": "Rajasthan",
+    "month": 2,
+    "durationDays": 3,
+    "isNational": false,
+    "description": "Cultural fair of the Thar with folk music, turban tying, and camel pageantry near the golden fort."
+  },
+  {
+    "externalId": "festival:pushkar-fair",
+    "name": "Pushkar Camel Fair",
+    "state": "Rajasthan",
+    "month": 11,
+    "durationDays": 5,
+    "isNational": false,
+    "description": "Livestock fair and Kartik pilgrimage around Pushkar lake, one of Rajasthan's great gatherings."
+  },
+  {
+    "externalId": "festival:hornill",
+    "name": "Hornbill Festival",
+    "state": "Nagaland",
+    "month": 12,
+    "durationDays": 10,
+    "isNational": false,
+    "description": "Naga heritage festival at Kisama, nicknamed the Festival of Festivals.",
+    "traditions": "Tribe-wise dances, morung displays, indigenous games, and night concerts."
+  },
+  {
+    "externalId": "festival:losar",
+    "name": "Losar",
+    "state": "Ladakh",
+    "month": 1,
+    "durationDays": 5,
+    "isNational": false,
+    "description": "Tibetan-Buddhist new year in Ladakh and Himalayan monasteries.",
+    "traditions": "Guthuk soup, monastery masked dances, and offerings at household shrines."
+  },
+  {
+    "externalId": "festival:hemis",
+    "name": "Hemis Festival",
+    "state": "Ladakh",
+    "month": 7,
+    "durationDays": 2,
+    "isNational": false,
+    "description": "Masked cham dances at Hemis Monastery honouring Padmasambhava."
+  },
+  {
+    "externalId": "festival:thrissur-pooram",
+    "name": "Thrissur Pooram",
+    "state": "Kerala",
+    "month": 5,
+    "durationDays": 1,
+    "isNational": false,
+    "description": "Kerala's grandest temple pooram: competing elephant processions, ilanjithara melam, and fireworks."
+  },
+  {
+    "externalId": "festival:theyam",
+    "name": "Theyyam season",
+    "state": "Kerala",
+    "month": 12,
+    "durationDays": 90,
+    "isNational": false,
+    "description": "North Malabar ritual theatre in which dancers become living deities — a season more than a single day."
+  },
+  {
+    "externalId": "festival:kumbh",
+    "name": "Kumbh Mela",
+    "state": "Uttar Pradesh",
+    "month": 1,
+    "durationDays": 45,
+    "isNational": false,
+    "description": "The world's largest cyclical pilgrimage, rotating among Prayagraj, Haridwar, Nashik, and Ujjain.",
+    "traditions": "Shahi snan of akharas at the sangam, camps of sadhus, and kalpavas."
+  },
+  {
+    "externalId": "festival:gangaur",
+    "name": "Gangaur",
+    "state": "Rajasthan",
+    "month": 4,
+    "durationDays": 18,
+    "isNational": false,
+    "description": "Gauri festival of marital blessing, with ivory-and-terracotta processions in Jaipur and Udaipur."
+  },
+  {
+    "externalId": "festival:baisakhi",
+    "name": "Baisakhi",
+    "state": "Punjab",
+    "month": 4,
+    "durationDays": 1,
+    "isNational": false,
+    "description": "Harvest new year and the 1699 founding of the Khalsa by Guru Gobind Singh.",
+    "traditions": "Nagar kirtan, bhangra, and visits to gurdwaras."
+  },
+  {
+    "externalId": "festival:gurpurab-nanak",
+    "name": "Guru Nanak Jayanti",
+    "state": "Punjab",
+    "month": 11,
+    "durationDays": 1,
+    "isNational": false,
+    "description": "Birth anniversary of Guru Nanak, the most widely kept Sikh gurpurab.",
+    "traditions": "Akhand path, nagar kirtan, and langar at gurdwaras including Harmandir Sahib."
+  },
+  {
+    "externalId": "festival:mahashivaratri",
+    "name": "Maha Shivaratri",
+    "month": 2,
+    "durationDays": 1,
+    "isNational": true,
+    "description": "Great night of Shiva — vigils, abhisheka, and pilgrimages to Jyotirlinga shrines.",
+    "traditions": "Night-long fasting, bael leaves, and processions at Varanasi, Ujjain, and Kedarnath's season."
+  },
+  {
+    "externalId": "festival:raksha-bandhan",
+    "name": "Raksha Bandhan",
+    "month": 8,
+    "durationDays": 1,
+    "isNational": true,
+    "description": "Siblings tie the rakhi thread of protection and exchange sweets.",
+    "traditions": "Rakhi, gifts, and in Rajasthan often ghevar."
+  },
+  {
+    "externalId": "festival:karva-chauth",
+    "name": "Karva Chauth",
+    "state": "Punjab",
+    "month": 10,
+    "durationDays": 1,
+    "isNational": false,
+    "description": "North Indian fast kept from dawn until the moon is sighted, for a spouse's well-being."
+  },
+  {
+    "externalId": "festival:goa-carnival",
+    "name": "Goa Carnival",
+    "state": "Goa",
+    "month": 2,
+    "durationDays": 4,
+    "isNational": false,
+    "description": "Pre-Lenten parade introduced under the Portuguese, now a state-wide street festival.",
+    "traditions": "King Momo, floats, and Konkani-Portuguese music."
+  },
+  {
+    "externalId": "festival:khajuraho-dance",
+    "name": "Khajuraho Dance Festival",
+    "state": "Madhya Pradesh",
+    "month": 2,
+    "durationDays": 6,
+    "isNational": false,
+    "description": "Classical dance against the Chandela temples, usually in late February."
+  }
+]
