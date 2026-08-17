@@ -34,6 +34,15 @@ export interface RequestOptions {
   timeoutMs?: number;
 }
 
+type AuthTokenGetter = () => Promise<string | null>;
+
+let authTokenGetter: AuthTokenGetter | null = null;
+
+/** Wired by Clerk so every API call can attach `Authorization: Bearer <jwt>`. */
+export function setAuthTokenGetter(getter: AuthTokenGetter | null) {
+  authTokenGetter = getter;
+}
+
 /**
  * Every failure from this layer is an ApiError, so callers only catch one type.
  *  - `status === 0`  → network failure / no response (see `isNetworkError`)
@@ -137,7 +146,13 @@ export async function request<T>(
   const url = buildUrl(path, params);
   const { signal, cleanup, timedOut } = makeSignal(externalSignal, timeoutMs);
 
-  const init: RequestInit = { method, signal, headers: { ...headers } };
+  const mergedHeaders: Record<string, string> = { ...headers };
+  if (!mergedHeaders.Authorization && authTokenGetter) {
+    const token = await authTokenGetter();
+    if (token) mergedHeaders.Authorization = `Bearer ${token}`;
+  }
+
+  const init: RequestInit = { method, signal, headers: mergedHeaders };
 
   if (body !== undefined && body !== null) {
     init.body = typeof body === "string" ? body : JSON.stringify(body);

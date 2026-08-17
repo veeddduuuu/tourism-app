@@ -395,6 +395,29 @@ export interface TripPlan {
 export type TripItinerary = TripPlan;
 export type TripPlanResponse = TripPlan;
 
+export interface SavedTrip {
+  id: string;
+  userId: string | null;
+  budget: number | null;
+  duration: number | null;
+  preferences: unknown;
+  generatedItinerary: TripPlan | null;
+  createdAt: string | null;
+}
+
+export interface AuthUser {
+  id: string;
+  firstName: string | null;
+  lastName: string | null;
+  imageUrl: string;
+  email: string | null;
+}
+
+export interface AuthSession {
+  authenticated: boolean;
+  userId: string | null;
+}
+
 // ---------------------------------------------------------------------------
 // AI Story (GET /ai/story)
 // ---------------------------------------------------------------------------

@@ -12,6 +12,7 @@ export * from "./history";
 export * from "./search";
 export * from "./trip";
 export * from "./story";
+export * from "./auth";
 
 // Re-export the client + all contracts so callers need only one import path.
 export { ApiError, API_BASE_URL, request, apiGet, apiPost } from "../http";
