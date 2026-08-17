@@ -138,6 +138,7 @@ export default function TripPreferences() {
   const guide = useAppStore((s) => s.guide);
   const destinationState = useAppStore((s) => s.destinationState);
   const setTripPrefs = useAppStore((s) => s.setTripPrefs);
+  const setSavedPlan = useAppStore((s) => s.setSavedPlan);
 
   const accent = guide?.color ?? "#FF6B35";
   const place = destinationState ?? "India";
@@ -207,6 +208,7 @@ export default function TripPreferences() {
       stayType,
       transportMode,
     });
+    setSavedPlan(null);
     router.replace("/itinerary" as any);
   };
 

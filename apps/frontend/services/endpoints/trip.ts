@@ -5,8 +5,14 @@
  * embedded weather ∥ travel ∥ safety → hotels → itinerary → budget → critic pipeline.
  */
 
-import { apiPost } from "../http";
-import type { TripParams, TripPlanRequest, TripPlan } from "../contracts";
+import { apiGet, apiPost } from "../http";
+import type {
+  ListResponse,
+  SavedTrip,
+  TripParams,
+  TripPlanRequest,
+  TripPlan,
+} from "../contracts";
 
 /** Convert Aaroh prefs into the trip-planner request body. */
 export function toTripPlanRequest(params: TripParams): TripPlanRequest {
@@ -42,6 +48,25 @@ export async function planTrip(
     signal,
     timeoutMs: 90_000,
   });
+}
+
+export async function getTripHistory(
+  page = 1,
+  limit = 20,
+  signal?: AbortSignal
+): Promise<ListResponse<SavedTrip>> {
+  return apiGet<ListResponse<SavedTrip>>(
+    "/ai/trip/history",
+    { page, limit },
+    { signal }
+  );
+}
+
+export async function getSavedTrip(
+  id: string,
+  signal?: AbortSignal
+): Promise<SavedTrip> {
+  return apiGet<SavedTrip>(`/ai/trip/${id}`, undefined, { signal });
 }
 
 /** @deprecated Use planTrip — kept so old imports keep compiling. */

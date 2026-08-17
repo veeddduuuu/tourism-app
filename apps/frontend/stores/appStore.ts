@@ -1,5 +1,7 @@
 import { useSyncExternalStore } from "react";
 
+import type { TripPlan } from "../services/contracts";
+
 export type Gender = "male" | "female";
 export type AgeGroup = "young" | "adult" | "senior";
 
@@ -36,10 +38,12 @@ export interface AppState {
   guide: Guide | null;
   destinationState: string | null;
   tripPrefs: TripPrefs | null;
+  savedPlan: TripPlan | null;
   setLanguage: (lang: string) => void;
   setGuide: (guide: Guide) => void;
   setDestinationState: (state: string | null) => void;
   setTripPrefs: (prefs: TripPrefs) => void;
+  setSavedPlan: (plan: TripPlan | null) => void;
 }
 
 // Minimal dependency-free global store (zustand isn't installed in this app).
@@ -48,6 +52,7 @@ let state = {
   guide: null as Guide | null,
   destinationState: null as string | null,
   tripPrefs: null as TripPrefs | null,
+  savedPlan: null as TripPlan | null,
 };
 
 const listeners = new Set<() => void>();
@@ -69,6 +74,7 @@ const actions = {
   setDestinationState: (destinationState: string | null) =>
     setState({ destinationState }),
   setTripPrefs: (tripPrefs: TripPrefs) => setState({ tripPrefs }),
+  setSavedPlan: (savedPlan: TripPlan | null) => setState({ savedPlan }),
 };
 
 function getSnapshot(): AppState {
@@ -95,4 +101,5 @@ export const appStore = {
   setGuide: actions.setGuide,
   setDestinationState: actions.setDestinationState,
   setTripPrefs: actions.setTripPrefs,
+  setSavedPlan: actions.setSavedPlan,
 };

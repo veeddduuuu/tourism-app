@@ -54,6 +54,7 @@ export default function ItineraryScreen() {
   const guide = useAppStore((s: any) => s.guide);
   const destination = useAppStore((s: any) => s.destinationState) as string | null;
   const prefs = useAppStore((s: any) => s.tripPrefs);
+  const savedPlan = useAppStore((s) => s.savedPlan);
 
   const accent = guide?.color ?? "#FF6B35";
   const state = destination ?? "India";
@@ -99,24 +100,30 @@ export default function ItineraryScreen() {
     ]
   );
 
-  const { data: plan, loading, error, refetch } = useApiQuery(
-    (signal) => planTrip(params, signal),
-    [
-      params.destination,
-      params.origin,
-      params.startDate,
-      params.endDate,
-      params.budget,
-      params.currency,
-      params.travelers,
-      params.pace,
-      params.stayType,
-      params.transportMode,
-      params.interests.join(","),
-    ]
+  const { data: fetchedPlan, loading, error, refetch } = useApiQuery(
+    (signal) =>
+      savedPlan ? Promise.resolve(savedPlan) : planTrip(params, signal),
+    savedPlan
+      ? ["saved", savedPlan.trip_id]
+      : [
+          params.destination,
+          params.origin,
+          params.startDate,
+          params.endDate,
+          params.budget,
+          params.currency,
+          params.travelers,
+          params.pace,
+          params.stayType,
+          params.transportMode,
+          params.interests.join(","),
+        ]
   );
 
-  if (loading) {
+  const plan = savedPlan ?? fetchedPlan;
+  const loadingPlan = savedPlan ? false : loading;
+
+  if (loadingPlan) {
     return (
       <LinearGradient colors={["#04122A", "#0A2E5C", "#123E78"]} style={styles.center}>
         <View style={[styles.loaderAvatar, { borderColor: accent }]}>
