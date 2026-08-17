@@ -49,6 +49,7 @@ aaroh/
 | Prefix | Role |
 |--------|------|
 | `GET /health` | Liveness |
+| `/api/auth/me`, `/api/auth/session` | Clerk session / current user |
 | `/api/places` | Places catalog |
 | `/api/foods` | Foods |
 | `/api/festivals` | Festivals |
@@ -65,6 +66,7 @@ Trip planner pipeline (in `apps/backend/src/tripPlanner/`): weather ∥ travel �
 
 | Path | Screen |
 |------|--------|
+| `app/(auth)/login.tsx`, `register.tsx` | Clerk sign-in / sign-up |
 | `app/welcome.tsx`, `app/state-selector.tsx` | Onboarding / destination |
 | `app/trip-preferences.tsx` | Trip prefs → planner |
 | `app/itinerary.tsx` | Rendered multi-agent plan |
@@ -92,7 +94,21 @@ DATABASE_URL="postgresql://…"
 GROQ_API_KEY=…
 REDIS_URL=redis://localhost:6379   # local Redis; use redis://redis:6379 inside Compose
 EXPO_PUBLIC_API_URL=http://localhost:3000/api
+EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_…
+CLERK_SECRET_KEY=sk_test_…
 ```
+
+Clerk (auth):
+
+1. Create an application at [dashboard.clerk.com](https://dashboard.clerk.com/).
+2. Enable **Native API** (Clerk Dashboard → Native applications).
+3. Enable Email + password (and Google if you want that button).
+4. Put `CLERK_SECRET_KEY` in the **repo-root** `.env` and `EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY` in **both** the root `.env` and `apps/frontend/.env` (Expo does not always load the monorepo root file).
+5. Restart the backend and Expo after changing keys.
+
+Without Clerk keys the catalog still works; trip history stays empty and Profile shows a setup hint.
+
+Signed-in trip plans are saved on `POST /api/ai/trip/plan` and listed from Profile → My trips.
 
 For a **physical device**, use your machine’s LAN IP instead of `localhost` (e.g. `http://192.168.1.10:3000/api`). Android emulator often needs `http://10.0.2.2:3000/api`.
 
@@ -135,7 +151,7 @@ API: [http://localhost:3000](http://localhost:3000) — check `GET /health`.
 
 ```bash
 cd apps/frontend
-npm start          # Expo (tunnel script in package.json)
+npm start          # Expo (LAN). Use npm run start:tunnel if Expo Go is on another network
 # or: npm run android | npm run ios | npm run web
 ```
 
