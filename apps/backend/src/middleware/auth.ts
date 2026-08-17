@@ -1,14 +1,37 @@
 import { ClerkExpressRequireAuth, ClerkExpressWithAuth } from '@clerk/clerk-sdk-node';
-import type { RequestHandler } from 'express';
+import type { Request, RequestHandler } from 'express';
+import type { WithAuthProp } from '@clerk/clerk-sdk-node';
 
-// Clerk authentication middleware for protected routes — rejects with 401 when
-// no valid session is present.
-export const requireAuth = ClerkExpressRequireAuth();
+const clerkConfigured = Boolean(process.env.CLERK_SECRET_KEY);
 
-// Clerk needs both keys to authenticate a request. When they're absent (e.g.
-// local dev without Clerk wired up) we skip auth entirely rather than 500.
-const clerkConfigured = Boolean(process.env.CLERK_SECRET_KEY && process.env.CLERK_PUBLISHABLE_KEY);
-const clerkWithAuth: RequestHandler | null = clerkConfigured ? ClerkExpressWithAuth() : null;
+function clerkRequireAuth(): RequestHandler {
+  return ClerkExpressRequireAuth();
+}
+
+const clerkWithAuth: RequestHandler | null = clerkConfigured
+  ? ClerkExpressWithAuth()
+  : null;
+
+/** Clerk user id from a request that has already passed auth middleware. */
+export function getAuthUserId(req: Request): string | null {
+  return (req as WithAuthProp<Request>).auth?.userId ?? null;
+}
+
+export function isClerkConfigured(): boolean {
+  return clerkConfigured;
+}
+
+/**
+ * Rejects unauthenticated requests with 401. Returns 503 when Clerk is not
+ * configured so local catalog browsing still works without auth keys.
+ */
+export const requireAuth: RequestHandler = (req, res, next) => {
+  if (!clerkConfigured) {
+    res.status(503).json({ error: 'Auth is not configured' });
+    return;
+  }
+  clerkRequireAuth()(req, res, next);
+};
 
 /**
  * Optional authentication: populates `req.auth.userId` when a valid Clerk

@@ -8,12 +8,14 @@ import searchRouter from './search';
 import aiRouter from './ai';
 import translateRouter from './translate';
 import translationRouter from './translation';
+import authRouter from './auth';
 
 const router = Router();
 
 // Apply rate limiting to all routes
 router.use(apiLimiter);
 
+router.use('/auth', authRouter);
 router.use('/places', placesRouter);
 router.use('/foods', foodsRouter);
 router.use('/festivals', festivalsRouter);

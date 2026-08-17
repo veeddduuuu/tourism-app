@@ -1,11 +1,10 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { z } from 'zod';
 import { eq, desc, sql } from 'drizzle-orm';
-import type { WithAuthProp } from '@clerk/clerk-sdk-node';
 import { db } from '../db';
 import { aiTrips } from '../db/schema';
 import { aiLimiter } from '../middleware/rateLimit';
-import { optionalAuth } from '../middleware/auth';
+import { getAuthUserId, optionalAuth } from '../middleware/auth';
 import { cacheGet, cacheSet } from '../db/redis';
 import { generateStory, StoryGenerationError } from '../services/groq';
 import { parseQuery } from '../utils/parseQuery';
@@ -22,10 +21,6 @@ const historyQuerySchema = z.object({
   page: z.coerce.number().min(1).default(1),
   limit: z.coerce.number().min(1).max(50).default(20),
 });
-
-function getUserId(req: Request): string | null {
-  return (req as WithAuthProp<Request>).auth?.userId ?? null;
-}
 
 /** Serialize travel legs with both from/to and from_place/to_place for clients. */
 function serializePlan(plan: Awaited<ReturnType<typeof planTrip>>) {
@@ -66,7 +61,7 @@ router.post(
       const plan = await planTrip(parsed.data);
       const payload = serializePlan(plan);
 
-      const userId = getUserId(req);
+      const userId = getAuthUserId(req);
       if (userId) {
         try {
           const start = new Date(parsed.data.start_date + 'T00:00:00Z');
@@ -122,7 +117,7 @@ router.get(
       const parsed = parseQuery(historyQuerySchema, req.query);
       const page = parsed.page ?? 1;
       const limit = parsed.limit ?? 20;
-      const userId = getUserId(req);
+      const userId = getAuthUserId(req);
 
       if (!userId) {
         res.json({ data: [], total: 0, page, limit });
@@ -153,23 +148,34 @@ router.get(
   }
 );
 
-// GET /ai/trip/:id — a single saved trip
-router.get('/trip/:id', async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const { id } = req.params;
+// GET /ai/trip/:id — a single saved trip (owner only)
+router.get(
+  '/trip/:id',
+  optionalAuth,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params;
+      const userId = getAuthUserId(req);
 
-    const rows = await db.select().from(aiTrips).where(eq(aiTrips.id, id));
+      const rows = await db.select().from(aiTrips).where(eq(aiTrips.id, id));
+      const trip = rows[0];
 
-    if (rows.length === 0) {
-      res.status(404).json({ error: 'Trip not found' });
-      return;
+      if (!trip) {
+        res.status(404).json({ error: 'Trip not found' });
+        return;
+      }
+
+      if (trip.userId && trip.userId !== userId) {
+        res.status(404).json({ error: 'Trip not found' });
+        return;
+      }
+
+      res.json(trip);
+    } catch (err) {
+      next(err);
     }
-
-    res.json(rows[0]);
-  } catch (err) {
-    next(err);
   }
-});
+);
 
 const STORY_CACHE_TTL = 604800; // 7 days
 
