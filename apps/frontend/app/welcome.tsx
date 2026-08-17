@@ -7,6 +7,7 @@ import {
   useWindowDimensions,
 } from "react-native";
 import { router } from "expo-router";
+import { isClerkConfigured } from "../lib/clerk";
 import { VideoView, useVideoPlayer } from "expo-video";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Haptics from "expo-haptics";
@@ -192,7 +193,11 @@ export default function WelcomeScreen() {
 
   const goNext = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
-    router.replace("/guide-selector" as any);
+    if (!isClerkConfigured) {
+      router.replace("/guide-selector" as any);
+      return;
+    }
+    router.replace("/(auth)/login?next=onboarding" as any);
   };
 
   const zoomStyle = useAnimatedStyle(() => ({

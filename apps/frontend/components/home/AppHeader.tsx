@@ -1,9 +1,12 @@
 import { Bell } from "lucide-react-native";
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { router } from "expo-router";
 import THEME from "../../constants/theme";
+import { useAppAuth } from "../../providers/authContext";
 
 export default function AppHeader() {
+  const { isSignedIn, user } = useAppAuth();
   const hour = new Date().getHours();
 
   let greeting = "Good Evening";
@@ -11,12 +14,16 @@ export default function AppHeader() {
   if (hour < 12) greeting = "Good Morning";
   else if (hour < 18) greeting = "Good Afternoon";
 
+  const name = isSignedIn
+    ? user?.firstName || user?.email?.split("@")[0] || "Explorer"
+    : "Explore Incredible India";
+
   return (
     <View style={styles.container}>
       <View>
         <Text style={styles.greeting}>{greeting} 👋</Text>
 
-        <Text style={styles.name}>Explore Incredible India</Text>
+        <Text style={styles.name}>{name}</Text>
       </View>
 
       <View style={styles.right}>
@@ -25,14 +32,23 @@ export default function AppHeader() {
           <View style={styles.badge} />
         </TouchableOpacity>
 
-        <View style={styles.avatarRing}>
-          <Image
-            source={{
-              uri: "https://i.pravatar.cc/100",
-            }}
-            style={styles.avatar}
-          />
-        </View>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={() =>
+            router.push(
+              (isSignedIn ? "/(tabs)/profile" : "/(auth)/login") as any
+            )
+          }
+        >
+          <View style={styles.avatarRing}>
+            <Image
+              source={{
+                uri: user?.imageUrl || "https://i.pravatar.cc/100",
+              }}
+              style={styles.avatar}
+            />
+          </View>
+        </TouchableOpacity>
       </View>
     </View>
   );
